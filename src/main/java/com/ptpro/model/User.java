@@ -16,6 +16,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Trainer trainer;
+
     @Column(
             name = "first_name"
     )
@@ -38,7 +42,7 @@ public class User {
     private String password;
 
     @Column(
-            name="role",
+            name = "roles",
             nullable = false
     )
     private String role;
@@ -46,6 +50,8 @@ public class User {
 
     @CreationTimestamp
     private LocalDate createAt;
+
+
     @UpdateTimestamp
     private LocalDate updateAt;
 
@@ -86,6 +92,14 @@ public class User {
         return password;
     }
 
+    public Trainer getTrainer() {
+        return trainer;
+    }
+
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -96,5 +110,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public LocalDate getUpdateAt() {
+        return updateAt;
+    }
+
+    public LocalDate getCreateAt() {
+        return createAt;
     }
 }
