@@ -8,6 +8,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.security.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "bookings")
@@ -17,7 +19,7 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="booking_id")
+    @Column(name = "booking_id")
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "session")
     private Booking booking;
 
@@ -25,23 +27,28 @@ public class Session {
     @JoinColumn(name = "trainer_id", nullable = false)
     private Trainer trainer;
 
-    @Column(name="location")
+    @Column(name = "location")
     private String location;
 
-    @Column(name="start_time", nullable = false)
+    @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
-    @Column(name="end_time", nullable = false)
+    @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;
+
+    @OneToMany(
+            mappedBy = "booking", fetch = FetchType.LAZY
+    )
+    private List<TrainingSchedule> trainingSchedules = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDate createAt;
     @UpdateTimestamp
     private LocalDate updateAt;
 
-    @Column(name="date")
+    @Column(name = "date")
     private LocalDate date;
 
-    @Column(name="available", nullable = false)
+    @Column(name = "available", nullable = false)
     private boolean available;
 
     public Long getId() {
@@ -50,6 +57,14 @@ public class Session {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Booking getBooking() {
+        return booking;
+    }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
     }
 
     public Trainer getTrainer() {
@@ -82,6 +97,14 @@ public class Session {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    public List<TrainingSchedule> getTrainingSchedules() {
+        return trainingSchedules;
+    }
+
+    public void setTrainingSchedules(List<TrainingSchedule> trainingSchedules) {
+        this.trainingSchedules = trainingSchedules;
     }
 
     public LocalDate getCreateAt() {

@@ -7,6 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -55,6 +57,20 @@ public class User {
     @UpdateTimestamp
     private LocalDate updateAt;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_bookings",
+            joinColumns = @JoinColumn(name = "user_id"), //FK naar deze class
+            inverseJoinColumns = @JoinColumn(name = "booking_id") //FK naar andere class
+    )
+    private List<Booking> bookings;
+
+
+    @OneToMany(
+            mappedBy = "user", fetch = FetchType.LAZY
+    )
+    private List<TrainingSchedule> trainingSchedules = new ArrayList<>();
+
 
     public Long getId() {
         return id;
@@ -62,6 +78,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Trainer getTrainer() {
+        return trainer;
+    }
+
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
     }
 
     public String getFirstName() {
@@ -92,14 +116,6 @@ public class User {
         return password;
     }
 
-    public Trainer getTrainer() {
-        return trainer;
-    }
-
-    public void setTrainer(Trainer trainer) {
-        this.trainer = trainer;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -112,11 +128,35 @@ public class User {
         this.role = role;
     }
 
+    public LocalDate getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(LocalDate createAt) {
+        this.createAt = createAt;
+    }
+
     public LocalDate getUpdateAt() {
         return updateAt;
     }
 
-    public LocalDate getCreateAt() {
-        return createAt;
+    public void setUpdateAt(LocalDate updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
+    public List<TrainingSchedule> getTrainingSchedules() {
+        return trainingSchedules;
+    }
+
+    public void setTrainingSchedules(List<TrainingSchedule> trainingSchedules) {
+        this.trainingSchedules = trainingSchedules;
     }
 }

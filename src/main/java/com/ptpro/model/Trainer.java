@@ -5,6 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "trainers")
@@ -37,18 +39,13 @@ public class Trainer {
     @JoinColumn(name = "session_id")
     private Session session;
 
+    @OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY)
+    private List<TrainingSchedule> trainingSchedules = new ArrayList<>();
+
     @CreationTimestamp
     private LocalDate createAt;
     @UpdateTimestamp
     private LocalDate updateAt;
-
-    public Session getSession() {
-        return session;
-    }
-
-    public void setSession(Session session) {
-        this.session = session;
-    }
 
     public Long getId() {
         return id;
@@ -90,11 +87,35 @@ public class Trainer {
         this.description = description;
     }
 
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
+    }
+
+    public List<TrainingSchedule> getTrainingSchedules() {
+        return trainingSchedules;
+    }
+
+    public void setTrainingSchedules(List<TrainingSchedule> trainingSchedules) {
+        this.trainingSchedules = trainingSchedules;
+    }
+
     public LocalDate getCreateAt() {
         return createAt;
     }
 
+    public void setCreateAt(LocalDate createAt) {
+        this.createAt = createAt;
+    }
+
     public LocalDate getUpdateAt() {
         return updateAt;
+    }
+
+    public void setUpdateAt(LocalDate updateAt) {
+        this.updateAt = updateAt;
     }
 }
