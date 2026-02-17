@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -17,7 +18,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Trainer trainer;
@@ -40,14 +40,11 @@ public class User {
             name = "password",
             nullable = false
     )
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Column(
-            name = "roles",
-            nullable = false
-    )
-    private String role;
+
 
 
     @CreationTimestamp
@@ -70,6 +67,10 @@ public class User {
             mappedBy = "user", fetch = FetchType.LAZY
     )
     private List<TrainingSchedule> trainingSchedules = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
 
     public Long getId() {
@@ -120,11 +121,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

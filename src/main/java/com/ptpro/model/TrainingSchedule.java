@@ -2,6 +2,11 @@ package com.ptpro.model;
 
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "training_schedule")
@@ -22,6 +27,18 @@ public class TrainingSchedule {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "session_id")
     private Session session;
+
+    @Column(name = "file_name")
+    private String fileName;
+
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] contents;
+
+    @CreationTimestamp
+    private LocalDateTime createAt;
+    @UpdateTimestamp
+    private LocalDateTime updateAt;
 
     public Long getId() {
         return id;
@@ -53,5 +70,37 @@ public class TrainingSchedule {
 
     public void setSession(Session session) {
         this.session = session;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public byte[] getContents() {
+        return contents;
+    }
+
+    public void setContents(byte[] contents) {
+        this.contents = contents;
+    }
+
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(LocalDateTime createAt) {
+        this.createAt = createAt;
+    }
+
+    public LocalDateTime getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.updateAt = updateAt;
     }
 }
