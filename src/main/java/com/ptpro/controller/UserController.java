@@ -2,6 +2,8 @@ package com.ptpro.controller;
 
 
 import com.ptpro.model.User;
+import com.ptpro.repository.UserRepository;
+import com.ptpro.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +16,11 @@ public class UserController {
 
     //TODO: Moet nog dependency injection toevoegen
     //TODO: Alle <User> veranderen in DTO's
+        private final UserService userService;
 
+        public UserController(UserService userService){
+            this.userService = userService;
+        }
 
     public ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers())
