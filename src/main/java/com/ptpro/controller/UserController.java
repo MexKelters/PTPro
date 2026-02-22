@@ -1,17 +1,17 @@
 package com.ptpro.controller;
 
 
-import com.ptpro.model.User;
-import com.ptpro.repository.UserRepository;
+import com.ptpro.dto.response.UserResponse;
 import com.ptpro.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     //TODO: Moet nog dependency injection toevoegen
@@ -22,8 +22,9 @@ public class UserController {
             this.userService = userService;
         }
 
-    public ResponseEntity<List<User>> getAllUsers(){
-        return ResponseEntity.ok(userService.getAllUsers())
+    @GetMapping("/users")
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
 

@@ -10,7 +10,7 @@ import java.util.List;
 public class UserResponse {
 
     private Trainer trainer;
-    private String firstNAme;
+    private String firstName;
     private String lastName;
     private String email;
     private List<Booking> bookings;
@@ -25,12 +25,12 @@ public class UserResponse {
         this.trainer = trainer;
     }
 
-    public String getFirstNAme() {
-        return firstNAme;
+    public String getFirstName() {
+        return firstName;
     }
 
     public void setFirstNAme(String firstNAme) {
-        this.firstNAme = firstNAme;
+        this.firstName = firstNAme;
     }
 
     public String getLastName() {
