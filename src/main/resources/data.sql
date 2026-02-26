@@ -1,5 +1,5 @@
 -------------------------------------------------
--- ROLES
+-- ROLES (One-to-One met users)
 -------------------------------------------------
 INSERT INTO roles (id, name)
 VALUES
@@ -14,52 +14,36 @@ INSERT INTO users (id, first_name, last_name, email, password, role_id, create_a
 VALUES
     (1, 'Jan', 'Jansen', 'jan@test.com', '$2a$10$pass1', 1, '2026-02-17', '2026-02-17'),
     (2, 'Piet', 'Pieters', 'piet@test.com', '$2a$10$pass2', 2, '2026-02-17', '2026-02-17'),
-    (3, 'Sara', 'Visser', 'sara@test.com', '$2a$10$pass3', 3, '2026-02-17', '2026-02-17'),
-    (4, 'Tom', 'Bakker', 'tom@test.com', '$2a$10$pass4', 2, '2026-02-17', '2026-02-17'),
-    (5, 'Emma', 'Bos', 'emma@test.com', '$2a$10$pass5', 2, '2026-02-17', '2026-02-17'),
-    (6, 'Lucas', 'Meijer', 'lucas@test.com', '$2a$10$pass6', 2, '2026-02-17', '2026-02-17'),
-    (7, 'Nina', 'Kok', 'nina@test.com', '$2a$10$pass7', 2, '2026-02-17', '2026-02-17'),
-    (8, 'Mark', 'Post', 'mark@test.com', '$2a$10$pass8', 2, '2026-02-17', '2026-02-17'),
-    (9, 'Lisa', 'Vermeer', 'lisa@test.com', '$2a$10$pass9', 2, '2026-02-17', '2026-02-17'),
-    (10, 'Kevin', 'Smit', 'kevin@test.com', '$2a$10$pass10', 2, '2026-02-17', '2026-02-17');
+    (3, 'Sara', 'Visser', 'sara@test.com', '$2a$10$pass3', 3, '2026-02-17', '2026-02-17');
+
+-- Let op: nu hebben we slechts 3 users, omdat je alleen 3 roles hebt (One-to-One)
+-- Wil je meer users, dan moeten er extra roles worden toegevoegd!
 
 -------------------------------------------------
--- TRAINERS
+-- TRAINERS (als user 3 een trainer is)
 -------------------------------------------------
 INSERT INTO trainers (id, user_id, specialization, experience, description, create_at, update_at)
 VALUES
-    (1, 3, 'Fitness', '5 jaar', 'Personal trainer fitness', '2026-02-17 10:00:00', '2026-02-17 10:00:00'),
-    (2, 6, 'Yoga', '8 jaar', 'Yoga en mindfulness coach', '2026-02-17 10:00:00', '2026-02-17 10:00:00');
+    (1, 3, 'Fitness', '5 jaar', 'Personal trainer fitness', '2026-02-17 10:00:00', '2026-02-17 10:00:00');
 
 -------------------------------------------------
--- SESSIONS (Beschikbare tijdslots)
+-- SESSIONS
 -------------------------------------------------
 INSERT INTO sessions (id, trainer_id, location, start_time, end_time, date, available, create_at, update_at)
 VALUES
     (1, 1, 'Gym A', '2026-02-20 09:00:00', '2026-02-20 10:00:00', '2026-02-20', true, '2026-02-17 10:00:00', '2026-02-17 10:00:00'),
-    (2, 1, 'Gym B', '2026-02-21 11:00:00', '2026-02-21 12:00:00', '2026-02-21', true, '2026-02-17 10:00:00', '2026-02-17 10:00:00'),
-    (3, 2, 'Studio Yoga', '2026-02-22 08:00:00', '2026-02-22 09:00:00', '2026-02-22', true, '2026-02-17 10:00:00', '2026-02-17 10:00:00'),
-    (4, 2, 'Studio Yoga', '2026-02-23 18:00:00', '2026-02-23 19:00:00', '2026-02-23', true, '2026-02-17 10:00:00', '2026-02-17 10:00:00'),
-    (5, 1, 'Gym A', '2026-02-24 14:00:00', '2026-02-24 15:00:00', '2026-02-24', true, '2026-02-17 10:00:00', '2026-02-17 10:00:00');
+    (2, 1, 'Gym B', '2026-02-21 11:00:00', '2026-02-21 12:00:00', '2026-02-21', true, '2026-02-17 10:00:00', '2026-02-17 10:00:00');
 
 -------------------------------------------------
--- BOOKINGS (Geboekte sessies)
+-- BOOKINGS
 -------------------------------------------------
 INSERT INTO bookings (id, session_id, status, date, create_at, update_at)
 VALUES
-    (1, 1, true, '2026-02-20 09:00:00', '2026-02-17 10:00:00', '2026-02-17 10:00:00'),
-    (2, 2, true, '2026-02-21 11:00:00', '2026-02-17 10:00:00', '2026-02-17 10:00:00'),
-    (3, 3, false, '2026-02-22 08:00:00', '2026-02-17 10:00:00', '2026-02-17 10:00:00'),
-    (4, 4, true, '2026-02-23 18:00:00', '2026-02-17 10:00:00', '2026-02-17 10:00:00'),
-    (5, 5, false, '2026-02-24 14:00:00', '2026-02-17 10:00:00', '2026-02-17 10:00:00');
+    (1, 1, true, '2026-02-20 09:00:00', '2026-02-17 10:00:00', '2026-02-17 10:00:00');
 
 -------------------------------------------------
--- USER_BOOKINGS (Many-to-Many link table)
+-- USER_BOOKINGS
 -------------------------------------------------
 INSERT INTO user_bookings (user_id, booking_id)
 VALUES
-    (2, 1),
-    (5, 2),
-    (4, 3),
-    (5, 4),
-    (1, 5);
+    (3, 1);

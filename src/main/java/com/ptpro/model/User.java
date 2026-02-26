@@ -65,8 +65,8 @@ public class User {
     )
     private List<TrainingSchedule> trainingSchedules = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "role_id")
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
 
