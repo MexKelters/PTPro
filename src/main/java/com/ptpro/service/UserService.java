@@ -4,8 +4,11 @@ package com.ptpro.service;
 import com.ptpro.dto.request.CreateUserRequest;
 import com.ptpro.dto.response.UserResponse;
 import com.ptpro.mapper.UserMapper;
+import com.ptpro.model.Role;
 import com.ptpro.model.User;
+import com.ptpro.repository.RoleRepository;
 import com.ptpro.repository.UserRepository;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,10 +20,14 @@ public class UserService {
 
     final private UserRepository userRepository;
     final private UserMapper userMapper;
+    final private RoleRepository roleRepository;
+    final private EntityManager entityManager;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper){
+    public UserService(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository, EntityManager entityManager) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.roleRepository = roleRepository;
+        this.entityManager = entityManager;
     }
 
 
@@ -43,7 +50,14 @@ public class UserService {
 
     public UserResponse addUser(CreateUserRequest dto) {
         User newUser = userMapper.toEntity(dto);
+        // Role ophalen via DTO
+        Long roleId = dto.getRoleId();
+        Role role = entityManager.getReference(Role.class, roleId);
+        newUser.setRole(role);
         User savedUser = userRepository.save(newUser);
         return userMapper.toResponse(savedUser);
     }
+
+    //Nog de update en de delete methodes
+
 }

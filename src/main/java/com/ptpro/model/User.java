@@ -1,6 +1,7 @@
 package com.ptpro.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -35,12 +36,12 @@ public class User {
             unique = true
     )
     private String email;
+
     @Column(
             name = "password",
             nullable = false
     )
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
 
@@ -65,7 +66,7 @@ public class User {
     )
     private List<TrainingSchedule> trainingSchedules = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
