@@ -9,7 +9,6 @@ import com.ptpro.model.Trainer;
 import com.ptpro.model.User;
 import com.ptpro.repository.TrainerRepository;
 import com.ptpro.repository.UserRepository;
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
