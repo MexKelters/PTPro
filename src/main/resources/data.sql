@@ -1,84 +1,76 @@
--------------------------------------------------
+-- =========================
 -- ROLES
--------------------------------------------------
-INSERT INTO roles (id, name)
-VALUES
-    (1, 'ROLE_ADMIN'),
-    (2, 'ROLE_USER'),
-    (3, 'ROLE_TRAINER'),
-    (4, 'ROLE_USER_2'),
-    (5, 'ROLE_USER_3'),
-    (6, 'ROLE_TRAINER_2'),
-    (7, 'ROLE_TRAINER_3');
+-- =========================
+INSERT INTO roles (id, name) VALUES (1, 'ROLE_USER');
+INSERT INTO roles (id, name) VALUES (2, 'ROLE_TRAINER');
+INSERT INTO roles (id, name) VALUES (3, 'ROLE_ADMIN');
 
--------------------------------------------------
+
+-- =========================
 -- USERS
--------------------------------------------------
+-- =========================
 INSERT INTO users (id, first_name, last_name, email, password, role_id, create_at, update_at)
-VALUES
-    (1, 'Jan', 'Jansen', 'jan@test.com', '$2a$10$pass1', 1, '2026-02-17', '2026-02-17'),
-    (2, 'Piet', 'Pieters', 'piet@test.com', '$2a$10$pass2', 2, '2026-02-17', '2026-02-17'),
-    (3, 'Sara', 'Visser', 'sara@test.com', '$2a$10$pass3', 3, '2026-02-17', '2026-02-17'),
+VALUES (1, 'John', 'Doe', 'john@example.com', 'password123', 1, CURRENT_DATE, CURRENT_DATE);
 
-    (4, 'Tom', 'Bakker', 'tom@test.com', '$2a$10$pass4', 4, '2026-02-17', '2026-02-17'),
-    (5, 'Lisa', 'Smit', 'lisa@test.com', '$2a$10$pass5', 5, '2026-02-17', '2026-02-17'),
-    (6, 'Mark', 'Klaassen', 'mark@test.com', '$2a$10$pass6', 6, '2026-02-17', '2026-02-17'),
-    (7, 'Eva', 'Dijkstra', 'eva@test.com', '$2a$10$pass7', 7, '2026-02-17', '2026-02-17');
+INSERT INTO users (id, first_name, last_name, email, password, role_id, create_at, update_at)
+VALUES (2, 'Jane', 'Smith', 'jane@example.com', 'password123', 1, CURRENT_DATE, CURRENT_DATE);
 
--------------------------------------------------
--- TRAINERS
--------------------------------------------------
+INSERT INTO users (id, first_name, last_name, email, password, role_id, create_at, update_at)
+VALUES (3, 'Mike', 'Trainer', 'mike@example.com', 'password123', 2, CURRENT_DATE, CURRENT_DATE);
+
+INSERT INTO users (id, first_name, last_name, email, password, role_id, create_at, update_at)
+VALUES (4, 'Sarah', 'Trainer', 'sarah@example.com', 'password123', 2, CURRENT_DATE, CURRENT_DATE);
+
+INSERT INTO users (id, first_name, last_name, email, password, role_id, create_at, update_at)
+VALUES (5, 'Alex', 'Johnson', 'alex@example.com', 'password123', 1, CURRENT_DATE, CURRENT_DATE);
+
+
+-- =========================
+-- TRAINERS (niet elke user)
+-- =========================
 INSERT INTO trainers (id, user_id, specialization, experience, description, create_at, update_at)
-VALUES
-    (1, 3, 'Fitness', '5 jaar', 'Personal trainer fitness', '2026-02-17 10:00:00', '2026-02-17 10:00:00'),
+VALUES (1, 3, 'Strength Training', '5 years', 'Specialist in strength and conditioning', CURRENT_DATE, CURRENT_DATE);
 
-    (2, 6, 'Yoga', '3 jaar', 'Yoga & mindfulness trainer', '2026-02-17 11:00:00', '2026-02-17 11:00:00'),
+INSERT INTO trainers (id, user_id, specialization, experience, description, create_at, update_at)
+VALUES (2, 4, 'Yoga', '3 years', 'Yoga and flexibility coach', CURRENT_DATE, CURRENT_DATE);
 
-    (3, 7, 'Crossfit', '7 jaar', 'Crossfit coach', '2026-02-17 11:30:00', '2026-02-17 11:30:00');
 
--------------------------------------------------
+-- =========================
 -- SESSIONS
--------------------------------------------------
+-- =========================
 INSERT INTO sessions (id, trainer_id, location, start_time, end_time, date, available, create_at, update_at)
-VALUES
-    (1, 1, 'Gym A', '2026-02-20 09:00:00', '2026-02-20 10:00:00', '2026-02-20', true, '2026-02-17 10:00:00', '2026-02-17 10:00:00'),
+VALUES (1, 1, 'Gym Room A', '2026-04-01T10:00:00', '2026-04-01T11:00:00', '2026-04-01', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-    (2, 1, 'Gym B', '2026-02-21 11:00:00', '2026-02-21 12:00:00', '2026-02-21', true, '2026-02-17 10:00:00', '2026-02-17 10:00:00'),
+INSERT INTO sessions (id, trainer_id, location, start_time, end_time, date, available, create_at, update_at)
+VALUES (2, 1, 'Gym Room B', '2026-04-02T14:00:00', '2026-04-02T15:00:00', '2026-04-02', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-    (3, 2, 'Studio C', '2026-02-22 08:00:00', '2026-02-22 09:00:00', '2026-02-22', true, '2026-02-17 11:00:00', '2026-02-17 11:00:00'),
+INSERT INTO sessions (id, trainer_id, location, start_time, end_time, date, available, create_at, update_at)
+VALUES (3, 2, 'Yoga Studio', '2026-04-03T09:00:00', '2026-04-03T10:00:00', '2026-04-03', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-    (4, 2, 'Studio C', '2026-02-23 10:00:00', '2026-02-23 11:00:00', '2026-02-23', true, '2026-02-17 11:00:00', '2026-02-17 11:00:00'),
 
-    (5, 3, 'Crossfit Box', '2026-02-24 18:00:00', '2026-02-24 19:30:00', '2026-02-24', true, '2026-02-17 11:30:00', '2026-02-17 11:30:00'),
-
-    (6, 3, 'Crossfit Box', '2026-02-25 17:00:00', '2026-02-25 18:00:00', '2026-02-25', true, '2026-02-17 11:30:00', '2026-02-17 11:30:00');
-
--------------------------------------------------
+-- =========================
 -- BOOKINGS
--------------------------------------------------
+-- =========================
 INSERT INTO bookings (id, session_id, status, date, create_at, update_at)
-VALUES
-    (1, 1, true,  '2026-02-20 09:00:00', '2026-02-17 10:00:00', '2026-02-17 10:00:00'),
+VALUES (1, 1, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-    (2, 2, true,  '2026-02-21 11:00:00', '2026-02-18 09:00:00', '2026-02-18 09:00:00'),
+INSERT INTO bookings (id, session_id, status, date, create_at, update_at)
+VALUES (2, 3, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-    (3, 3, true,  '2026-02-22 08:00:00', '2026-02-18 10:00:00', '2026-02-18 10:00:00'),
 
-    (4, 4, false, '2026-02-23 10:00:00', '2026-02-18 11:00:00', '2026-02-18 11:00:00'),
+-- =========================
+-- USER BOOKINGS (ManyToMany)
+-- =========================
+INSERT INTO user_bookings (user_id, booking_id) VALUES (1, 1);
+INSERT INTO user_bookings (user_id, booking_id) VALUES (2, 1);
+INSERT INTO user_bookings (user_id, booking_id) VALUES (5, 2);
 
-    (5, 5, true,  '2026-02-24 18:00:00', '2026-02-19 09:00:00', '2026-02-19 09:00:00'),
 
-    (6, 6, true,  '2026-02-25 17:00:00', '2026-02-19 10:00:00', '2026-02-19 10:00:00');
+-- =========================
+-- TRAINING SCHEDULE
+-- =========================
+INSERT INTO training_schedule (id, trainer_id, user_id, session_id, file_name, contents, create_at, update_at)
+VALUES (1, 1, 1, 1, 'schedule1.pdf', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--------------------------------------------------
--- USER_BOOKINGS
--------------------------------------------------
-INSERT INTO user_bookings (user_id, booking_id)
-VALUES
-    (3, 1), -- Sara
-
-    (2, 2), -- Piet
-    (4, 3), -- Tom
-    (5, 4), -- Lisa
-    (2, 5), -- Piet
-    (4, 6); -- Tom
+INSERT INTO training_schedule (id, trainer_id, user_id, session_id, file_name, contents, create_at, update_at)
+VALUES (2, 2, 2, 3, 'schedule2.pdf', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

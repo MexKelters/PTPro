@@ -18,7 +18,7 @@ public class Trainer {
     private Long id;
 
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @OneToOne
     @JoinColumn(
             name = "user_id",
             nullable = false,

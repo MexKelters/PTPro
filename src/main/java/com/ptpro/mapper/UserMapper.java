@@ -11,8 +11,8 @@ import org.mapstruct.MappingTarget;
 public interface UserMapper {
 
     // CREATE
-    @org.mapstruct.Mapping(target = "id", ignore = true)   // 👈 negeer id
-    @org.mapstruct.Mapping(target = "role", ignore = true) // 👈 negeer role, wij zetten het handmatig
+    @org.mapstruct.Mapping(target = "id", ignore = true)
+    @org.mapstruct.Mapping(target = "role", ignore = true)
     User toEntity(CreateUserRequest dto);
 
     // UPDATE

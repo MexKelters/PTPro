@@ -2,6 +2,7 @@ package com.ptpro.service;
 
 
 import com.ptpro.dto.request.CreateUserRequest;
+import com.ptpro.dto.request.UpdateUserRequest;
 import com.ptpro.dto.response.UserResponse;
 import com.ptpro.mapper.UserMapper;
 import com.ptpro.model.Role;
@@ -58,6 +59,27 @@ public class UserService {
         return userMapper.toResponse(savedUser);
     }
 
-    //Nog de update en de delete methodes
+//    public UpdateUserRequest updateUser(Long id, UpdateUserRequest updateUserRequest) {
+//        User user = userRepository.findById(id).get();
+//        user.setFirstName(updateUserRequest.getFirstName());
+//        user.setLastName(updateUserRequest.getLastName());
+//        user.setEmail(updateUserRequest.getEmail());
+//        userRepository.save(user);
+//        return userMapper.toResponse(user);
+//    }
+
+    public UserResponse updateUser(Long id, UpdateUserRequest request) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        userMapper.updateEntity(user, request);
+        userRepository.save(user);
+        return userMapper.toResponse(user);
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
 
 }

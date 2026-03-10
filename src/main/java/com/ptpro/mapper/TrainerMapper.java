@@ -16,4 +16,5 @@ public interface TrainerMapper{
     void updateEntity(@MappingTarget Trainer entity, UpdateTrainerRequest dto);
     //RESPONSE
     TrainerResponse toResponse(Trainer entity);
+
 }

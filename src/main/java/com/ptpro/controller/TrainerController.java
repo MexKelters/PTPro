@@ -1,13 +1,11 @@
 package com.ptpro.controller;
 
 
+import com.ptpro.dto.request.CreateTrainerRequest;
 import com.ptpro.dto.response.TrainerResponse;
 import com.ptpro.service.TrainerService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,4 +29,11 @@ public class TrainerController {
     public ResponseEntity<TrainerResponse> getTrainerById(@PathVariable Long id) {
         return ResponseEntity.ok(trainerService.getById(id));
     }
+
+    @PostMapping
+    public ResponseEntity<CreateTrainerRequest> addTrainer(@RequestBody CreateTrainerRequest createTrainerRequest) {
+        return ResponseEntity.ok(trainerService.addTrainer(createTrainerRequest));
+    }
+
+
 }
