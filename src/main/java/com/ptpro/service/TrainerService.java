@@ -2,6 +2,7 @@ package com.ptpro.service;
 
 
 import com.ptpro.dto.request.CreateTrainerRequest;
+import com.ptpro.dto.request.UpdateTrainerRequest;
 import com.ptpro.dto.response.TrainerResponse;
 import com.ptpro.mapper.TrainerMapper;
 import com.ptpro.model.Trainer;
@@ -64,5 +65,16 @@ public class TrainerService {
         response.setExperience(saved.getExperience());
         response.setDescription(saved.getDescription());
         return response;
+    }
+
+    public TrainerResponse updateTrainer(Long id, UpdateTrainerRequest updateTrainerRequest) {
+        Trainer trainer = trainerRepository.findById(id).orElseThrow(()-> new RuntimeException("Trainer not found"));
+        trainerMapper.updateEntity(trainer, updateTrainerRequest);
+        trainerRepository.save(trainer);
+        return trainerMapper.toResponse(trainer);
+    }
+
+    public void deleteTrainer(Long id) {
+        trainerRepository.deleteById(id);
     }
 }

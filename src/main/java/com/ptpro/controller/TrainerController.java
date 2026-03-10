@@ -2,6 +2,7 @@ package com.ptpro.controller;
 
 
 import com.ptpro.dto.request.CreateTrainerRequest;
+import com.ptpro.dto.request.UpdateTrainerRequest;
 import com.ptpro.dto.response.TrainerResponse;
 import com.ptpro.service.TrainerService;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +36,16 @@ public class TrainerController {
         return ResponseEntity.ok(trainerService.addTrainer(createTrainerRequest));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<TrainerResponse> updateTrainer(
+            @PathVariable Long id,
+            @RequestBody UpdateTrainerRequest updateTrainerRequest) {
+        return ResponseEntity.ok(trainerService.updateTrainer(id, updateTrainerRequest));
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<TrainerResponse> deleteTrainer(@PathVariable Long id) {
+        trainerService.deleteTrainer(id);
+        return null;
+    }
 }
