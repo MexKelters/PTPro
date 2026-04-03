@@ -10,11 +10,10 @@ import com.ptpro.model.User;
 import com.ptpro.repository.RoleRepository;
 import com.ptpro.repository.UserRepository;
 import jakarta.persistence.EntityManager;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -82,4 +81,27 @@ public class UserService {
     }
 
 
+    public User getOrCreateUser(String email, String firstName, String lastName, Collection<GrantedAuthority> role) {
+        return userRepository.findByEmail(email)
+                .orElseGet(() -> {
+                    User newUser = new User();
+                    newUser.setEmail(email);
+                    newUser.setFirstName(firstName);
+                    newUser.setLastName(lastName);
+                    //Hoe cast ik dit naar een Role entity
+                    String roleFromArray = Arrays.toString(role.toArray());
+                    String roleFinal = roleFromArray.toString();
+                    String roleDef = roleFinal.replaceAll("\\[|\\]", "");
+                    Role newRole = new Role();
+                    roleRepository.save(newRole);
+                    newRole.setName(roleDef);
+
+                    // If statement maken en dan de ID van de role aan de user koppelen
+                    // Dit moet ik verder uitwerken, want hoe doe ik dat zonder duplicate entry
+
+
+                    newUser.setRole(newRole);
+                    return userRepository.save(newUser);
+                });
+    }
 }

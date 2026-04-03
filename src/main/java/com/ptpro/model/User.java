@@ -41,7 +41,7 @@ public class User {
 
     @Column(
             name = "password",
-            nullable = false
+            nullable = true
     )
 
     private String password;

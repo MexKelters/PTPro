@@ -44,6 +44,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/publicInfo").permitAll()
                         .requestMatchers("/user/**").permitAll()
+                        .requestMatchers("/trainer/*").permitAll()
+                        .requestMatchers("/auth/*").permitAll()
                         //requestmatchers voor andere endpoints
                         .anyRequest().authenticated()
                 )
