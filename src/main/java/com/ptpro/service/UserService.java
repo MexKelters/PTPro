@@ -10,11 +10,10 @@ import com.ptpro.model.User;
 import com.ptpro.repository.RoleRepository;
 import com.ptpro.repository.UserRepository;
 import jakarta.persistence.EntityManager;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -51,7 +50,6 @@ public class UserService {
 
     public UserResponse addUser(CreateUserRequest dto) {
         User newUser = userMapper.toEntity(dto);
-        // Role ophalen via DTO
         Long roleId = dto.getRoleId();
         Role role = entityManager.getReference(Role.class, roleId);
         newUser.setRole(role);
@@ -82,4 +80,41 @@ public class UserService {
     }
 
 
+//    public User getOrCreateUser(String email, String firstName, String lastName, Collection<GrantedAuthority> roles) {
+//        return userRepository.findByEmail(email)
+//                .orElseGet(() -> {
+//                    User newUser = new User();
+//                    newUser.setEmail(email);
+//                    newUser.setFirstName(firstName);
+//                    newUser.setLastName(lastName);
+//                    String roleName = roles.iterator().next().getAuthority();
+//                    Role roleEntity = roleRepository.findByName(roleName)
+//                            .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
+//
+//                    newUser.setRole(roleEntity);
+//
+//                    return userRepository.save(newUser);
+//                });
+//    }
+
+    public User getOrCreateUser(String email, String firstName, String lastName, Collection<GrantedAuthority> roles) {
+
+        return userRepository.findByEmail(email)
+                .orElseGet(() -> {
+                    User newUser = new User();
+                    newUser.setEmail(email);
+                    newUser.setFirstName(firstName);
+                    newUser.setLastName(lastName);
+
+                    // Pak gewoon standaard ROLE_USER
+                    Role role = entityManager.getReference(Role.class, 1L);
+
+                    newUser.setRole(role);
+
+                    return userRepository.save(newUser);
+                });
+    }
+
 }
+
+

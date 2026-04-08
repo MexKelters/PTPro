@@ -48,4 +48,6 @@ public class TrainerController {
         trainerService.deleteTrainer(id);
         return null;
     }
+
+
 }

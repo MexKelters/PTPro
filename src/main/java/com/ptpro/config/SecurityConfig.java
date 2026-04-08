@@ -44,7 +44,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/publicInfo").permitAll()
                         .requestMatchers("/user/**").permitAll()
-                        //requestmatchers voor andere endpoints
+                        .requestMatchers("/trainer/*").permitAll()
+                        .requestMatchers("/auth/*").permitAll()
+                        .requestMatchers("*/sessions/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
