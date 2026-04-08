@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/user/**").permitAll()
                         .requestMatchers("/trainer/*").permitAll()
                         .requestMatchers("/auth/*").permitAll()
-                        //requestmatchers voor andere endpoints
+                        .requestMatchers("*/sessions/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

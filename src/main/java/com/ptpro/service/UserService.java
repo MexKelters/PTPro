@@ -50,7 +50,6 @@ public class UserService {
 
     public UserResponse addUser(CreateUserRequest dto) {
         User newUser = userMapper.toEntity(dto);
-        // Role ophalen via DTO
         Long roleId = dto.getRoleId();
         Role role = entityManager.getReference(Role.class, roleId);
         newUser.setRole(role);
@@ -81,27 +80,41 @@ public class UserService {
     }
 
 
-    public User getOrCreateUser(String email, String firstName, String lastName, Collection<GrantedAuthority> role) {
+//    public User getOrCreateUser(String email, String firstName, String lastName, Collection<GrantedAuthority> roles) {
+//        return userRepository.findByEmail(email)
+//                .orElseGet(() -> {
+//                    User newUser = new User();
+//                    newUser.setEmail(email);
+//                    newUser.setFirstName(firstName);
+//                    newUser.setLastName(lastName);
+//                    String roleName = roles.iterator().next().getAuthority();
+//                    Role roleEntity = roleRepository.findByName(roleName)
+//                            .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
+//
+//                    newUser.setRole(roleEntity);
+//
+//                    return userRepository.save(newUser);
+//                });
+//    }
+
+    public User getOrCreateUser(String email, String firstName, String lastName, Collection<GrantedAuthority> roles) {
+
         return userRepository.findByEmail(email)
                 .orElseGet(() -> {
                     User newUser = new User();
                     newUser.setEmail(email);
                     newUser.setFirstName(firstName);
                     newUser.setLastName(lastName);
-                    //Hoe cast ik dit naar een Role entity
-                    String roleFromArray = Arrays.toString(role.toArray());
-                    String roleFinal = roleFromArray.toString();
-                    String roleDef = roleFinal.replaceAll("\\[|\\]", "");
-                    Role newRole = new Role();
-                    roleRepository.save(newRole);
-                    newRole.setName(roleDef);
 
-                    // If statement maken en dan de ID van de role aan de user koppelen
-                    // Dit moet ik verder uitwerken, want hoe doe ik dat zonder duplicate entry
+                    // Pak gewoon standaard ROLE_USER
+                    Role role = entityManager.getReference(Role.class, 1L);
 
+                    newUser.setRole(role);
 
-                    newUser.setRole(newRole);
                     return userRepository.save(newUser);
                 });
     }
+
 }
+
+
