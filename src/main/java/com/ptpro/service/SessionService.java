@@ -33,4 +33,29 @@ public class SessionService {
         Session savedSession = sessionRepository.save(newSession);
         return sessionMapper.toResponse(savedSession);
     }
+
+    public List<SessionResponse> getAll(Long id) {
+        List<Session> sessions = sessionRepository.findByTrainerId(id);
+        if (sessions.isEmpty()){
+            throw new RuntimeException("Geen sessies gevonden voor trainer met id" + id);
+        }
+        List<SessionResponse> dtos = new ArrayList<>();
+        for(Session session : sessions){
+            dtos.add(sessionMapper.toResponse(session));
+        }
+        return dtos;
+    }
+
+
+    public List<SessionResponse> getAllAvailable(Long id) {
+        List<Session> sessions = sessionRepository.getAllAvailable(id);
+        if (sessions.isEmpty()){
+            throw new RuntimeException("Geen sessies gevonden voor trainer met id" + id);
+        }
+        List<SessionResponse> dtos = new ArrayList<>();
+        for(Session session : sessions){
+            dtos.add(sessionMapper.toResponse(session));
+        }
+        return dtos;
+    }
 }
