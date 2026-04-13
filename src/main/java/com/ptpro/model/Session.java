@@ -1,6 +1,8 @@
 package com.ptpro.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,6 +21,7 @@ public class Session {
     private Long id;
 
     @OneToOne(mappedBy = "session", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
     private Booking booking;
 
     @ManyToOne
@@ -36,6 +39,7 @@ public class Session {
     @OneToMany(
             mappedBy = "session", fetch = FetchType.LAZY
     )
+    @JsonIgnore
     private List<TrainingSchedule> trainingSchedules = new ArrayList<>();
 
     @CreationTimestamp

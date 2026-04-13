@@ -38,6 +38,9 @@ public class SessionController {
         return ResponseEntity.ok(sessionService.getAllAvailable(id));
     }
 
-    //FE-14 & FE-15
+    //
 
+
+    //FE-14 & FE-15
+//    @PutMapping("")
 }

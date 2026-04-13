@@ -60,12 +60,14 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"), //FK naar deze class
             inverseJoinColumns = @JoinColumn(name = "booking_id") //FK naar andere class
     )
+    @JsonIgnore
     private List<Booking> bookings;
 
 
     @OneToMany(
             mappedBy = "user", fetch = FetchType.LAZY
     )
+    @JsonIgnore
     private List<TrainingSchedule> trainingSchedules = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.MERGE)

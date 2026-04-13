@@ -1,5 +1,6 @@
 package com.ptpro.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -37,9 +38,11 @@ public class Trainer {
 
     @ManyToOne
     @JoinColumn(name = "session_id")
+    @JsonIgnore
     private Session session;
 
     @OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<TrainingSchedule> trainingSchedules = new ArrayList<>();
 
     @CreationTimestamp
