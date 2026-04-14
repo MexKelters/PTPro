@@ -1,6 +1,7 @@
 package com.ptpro.service;
 
 import com.ptpro.dto.request.CreateSessionsRequest;
+import com.ptpro.dto.request.UpdateSessionRequest;
 import com.ptpro.dto.response.SessionResponse;
 import com.ptpro.mapper.SessionMapper;
 import com.ptpro.model.Session;
@@ -57,5 +58,12 @@ public class SessionService {
             dtos.add(sessionMapper.toResponse(session));
         }
         return dtos;
+    }
+
+    public SessionResponse updateSession(Long id, UpdateSessionRequest request) {
+        Session session = sessionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sessie niet gevonden met id: " + id));
+        sessionMapper.updateEntity(session, request);
+        return sessionMapper.toResponse(sessionRepository.save(session));
     }
 }

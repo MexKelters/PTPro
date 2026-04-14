@@ -2,6 +2,7 @@ package com.ptpro.controller;
 
 
 import com.ptpro.dto.request.CreateSessionsRequest;
+import com.ptpro.dto.request.UpdateSessionRequest;
 import com.ptpro.dto.response.SessionResponse;
 import com.ptpro.service.SessionService;
 import org.apache.coyote.Response;
@@ -38,9 +39,10 @@ public class SessionController {
         return ResponseEntity.ok(sessionService.getAllAvailable(id));
     }
 
-    //
-
-
-    //FE-14 & FE-15
-//    @PutMapping("")
+    //FE-11
+    @PutMapping("/{id}/available")
+    public ResponseEntity<SessionResponse> setAvailable(@PathVariable Long id,
+                                                        @RequestBody UpdateSessionRequest request) {
+        return ResponseEntity.ok(sessionService.updateSession(id, request));
+    }
 }
