@@ -25,6 +25,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
+
+    //FE-4
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
@@ -36,6 +38,8 @@ public class UserController {
         return ResponseEntity.ok(userService.addUser(createUserRequest));
     }
 
+    //FE-5 (user)
+    //FE-6 (admin)
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest updateUserRequest) {
         return ResponseEntity.ok(userService.updateUser(id, updateUserRequest));

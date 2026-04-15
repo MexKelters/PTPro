@@ -20,22 +20,25 @@ public class TrainerController {
         this.trainerService = trainerService;
     }
 
-
+    //FE-8
     @GetMapping("/all")
     public ResponseEntity<List<TrainerResponse>> getAllTrainers() {
         return ResponseEntity.ok(trainerService.getAllTrainers());
     }
 
+    //FE-26
     @GetMapping("/{id}")
     public ResponseEntity<TrainerResponse> getTrainerById(@PathVariable Long id) {
         return ResponseEntity.ok(trainerService.getById(id));
     }
 
+    //FE-7
     @PostMapping
     public ResponseEntity<CreateTrainerRequest> addTrainer(@RequestBody CreateTrainerRequest createTrainerRequest) {
         return ResponseEntity.ok(trainerService.addTrainer(createTrainerRequest));
     }
 
+    //FE-9
     @PutMapping("/{id}")
     public ResponseEntity<TrainerResponse> updateTrainer(
             @PathVariable Long id,

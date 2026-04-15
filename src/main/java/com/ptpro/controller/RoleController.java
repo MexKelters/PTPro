@@ -19,6 +19,7 @@ public class RoleController {
         this.roleService = roleService;
     }
 
+    //FE-1
     @GetMapping
     public ResponseEntity<List<RoleResponse>> getAllRoles() {
         return ResponseEntity.ok(roleService.getAllRoles());

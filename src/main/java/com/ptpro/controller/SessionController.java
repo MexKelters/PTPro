@@ -21,13 +21,13 @@ public class SessionController {
         this.sessionService = sessionService;
     }
 
-    //Deze is voor het maken van een session FE-10
+    //FE-10
     @PostMapping("/{id}")
             public ResponseEntity<SessionResponse>createSession(@PathVariable Long id, @RequestBody CreateSessionsRequest createSessionsRequest){
             return ResponseEntity.ok(sessionService.createSession(id, createSessionsRequest));
     }
 
-    //Deze is voor het ophalen van een session van 1 bepaalde trainer FE-13
+    //FE-13
     @GetMapping("/all/{id}")
     public ResponseEntity<List<SessionResponse>>getAll(@PathVariable Long id){
         return ResponseEntity.ok(sessionService.getAll(id));
@@ -45,4 +45,5 @@ public class SessionController {
                                                         @RequestBody UpdateSessionRequest request) {
         return ResponseEntity.ok(sessionService.updateSession(id, request));
     }
+
 }

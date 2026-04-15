@@ -28,7 +28,6 @@ public class BookingService {
         this.userRepository = userRepository;
     }
 
-    //Alleen nog met DTO's werken
     public List<Booking> getBookingsByUser(Long userId) {
         List<Booking> bookings = bookingRepository.findAllByUserId(userId);
         if (bookings.isEmpty()) {
@@ -37,7 +36,6 @@ public class BookingService {
         return bookings;
     }
 
-    //Alleen nog met DTO's werken
     public List<Booking> getBookingsByTrainer(Long trainerId) {
         List<Booking> bookings = bookingRepository.findAllByTrainerId(trainerId);
         if (bookings.isEmpty()) {
@@ -46,8 +44,6 @@ public class BookingService {
         return bookings;
     }
 
-    //FE-14
-    //Alleen nog met DTO's werken
     @Transactional
     public Booking createBooking(Long sessionId, Long userId) {
         Session session = sessionRepository.findById(sessionId).orElseThrow(() -> new RuntimeException("Sessie niet gevonden met id: " + sessionId));
@@ -70,5 +66,18 @@ public class BookingService {
         booking.setUsers(users);
 
         return bookingRepository.save(booking);
+    }
+
+
+    @Transactional
+    public void cancelBooking(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking niet gevonden met id: " + bookingId));
+
+        Session session = booking.getSession();
+        session.setAvailable(true);
+        sessionRepository.save(session);
+
+        bookingRepository.delete(booking);
     }
 }

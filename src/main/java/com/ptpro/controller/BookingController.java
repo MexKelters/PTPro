@@ -17,16 +17,27 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
+    //FE-16
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Booking>> getBookingsByUser(@PathVariable Long userId) {
         List<Booking> bookings = bookingService.getBookingsByUser(userId);
         return ResponseEntity.ok(bookings);
     }
 
+    //FE-14
+    //FE-15
     @PostMapping("/create/{sessionId}/{userId}")
     public ResponseEntity<Booking> createBooking(@PathVariable Long sessionId,
                                                  @PathVariable Long userId) {
         Booking booking = bookingService.createBooking(sessionId, userId);
         return ResponseEntity.ok(booking);
+    }
+
+    //FE-27
+    //FE-17
+    @DeleteMapping("/cancel/{bookingId}")
+    public ResponseEntity<Void> cancelBooking(@PathVariable Long bookingId) {
+        bookingService.cancelBooking(bookingId);
+        return ResponseEntity.noContent().build();
     }
 }
