@@ -3,6 +3,7 @@ package com.ptpro.controller;
 import com.ptpro.model.Booking;
 import com.ptpro.service.BookingService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class BookingController {
     }
 
     //FE-16
+    @PreAuthorize("hasAnyRole('USER', 'TRAINER')")
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Booking>> getBookingsByUser(@PathVariable Long userId) {
         List<Booking> bookings = bookingService.getBookingsByUser(userId);
@@ -26,6 +28,7 @@ public class BookingController {
 
     //FE-14
     //FE-15
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/create/{sessionId}/{userId}")
     public ResponseEntity<Booking> createBooking(@PathVariable Long sessionId,
                                                  @PathVariable Long userId) {
@@ -35,6 +38,7 @@ public class BookingController {
 
     //FE-27
     //FE-17
+    @PreAuthorize("hasAnyRole('USER', 'TRAINER')")
     @DeleteMapping("/cancel/{bookingId}")
     public ResponseEntity<Void> cancelBooking(@PathVariable Long bookingId) {
         bookingService.cancelBooking(bookingId);

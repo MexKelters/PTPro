@@ -7,6 +7,7 @@ import com.ptpro.dto.response.SessionResponse;
 import com.ptpro.service.SessionService;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,24 +23,28 @@ public class SessionController {
     }
 
     //FE-10
+    @PreAuthorize("hasRole('TRAINER')")
     @PostMapping("/{id}")
             public ResponseEntity<SessionResponse>createSession(@PathVariable Long id, @RequestBody CreateSessionsRequest createSessionsRequest){
             return ResponseEntity.ok(sessionService.createSession(id, createSessionsRequest));
     }
 
     //FE-13
+    @PreAuthorize("hasRole('TRAINER')")
     @GetMapping("/all/{id}")
     public ResponseEntity<List<SessionResponse>>getAll(@PathVariable Long id){
         return ResponseEntity.ok(sessionService.getAll(id));
     }
 
     //FE-12
+    @PreAuthorize("hasAnyRole('USER', 'TRAINER')")
     @GetMapping("/all/available/{id}")
     public ResponseEntity<List<SessionResponse>>getAllAvailable(@PathVariable Long id){
         return ResponseEntity.ok(sessionService.getAllAvailable(id));
     }
 
     //FE-11
+    @PreAuthorize("hasRole('TRAINER')")
     @PutMapping("/{id}/available")
     public ResponseEntity<SessionResponse> setAvailable(@PathVariable Long id,
                                                         @RequestBody UpdateSessionRequest request) {

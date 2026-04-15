@@ -6,6 +6,7 @@ import com.ptpro.dto.request.UpdateTrainerRequest;
 import com.ptpro.dto.response.TrainerResponse;
 import com.ptpro.service.TrainerService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,24 +22,28 @@ public class TrainerController {
     }
 
     //FE-8
+    @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<TrainerResponse>> getAllTrainers() {
         return ResponseEntity.ok(trainerService.getAllTrainers());
     }
 
     //FE-26
+    @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<TrainerResponse> getTrainerById(@PathVariable Long id) {
         return ResponseEntity.ok(trainerService.getById(id));
     }
 
     //FE-7
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<CreateTrainerRequest> addTrainer(@RequestBody CreateTrainerRequest createTrainerRequest) {
         return ResponseEntity.ok(trainerService.addTrainer(createTrainerRequest));
     }
 
     //FE-9
+    @PreAuthorize("hasAnyRole('TRAINER', 'ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<TrainerResponse> updateTrainer(
             @PathVariable Long id,
@@ -46,6 +51,7 @@ public class TrainerController {
         return ResponseEntity.ok(trainerService.updateTrainer(id, updateTrainerRequest));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<TrainerResponse> deleteTrainer(@PathVariable Long id) {
         trainerService.deleteTrainer(id);
