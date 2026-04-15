@@ -57,14 +57,7 @@ public class UserService {
         return userMapper.toResponse(savedUser);
     }
 
-//    public UpdateUserRequest updateUser(Long id, UpdateUserRequest updateUserRequest) {
-//        User user = userRepository.findById(id).get();
-//        user.setFirstName(updateUserRequest.getFirstName());
-//        user.setLastName(updateUserRequest.getLastName());
-//        user.setEmail(updateUserRequest.getEmail());
-//        userRepository.save(user);
-//        return userMapper.toResponse(user);
-//    }
+
 
     public UserResponse updateUser(Long id, UpdateUserRequest request) {
 
@@ -79,23 +72,6 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-
-//    public User getOrCreateUser(String email, String firstName, String lastName, Collection<GrantedAuthority> roles) {
-//        return userRepository.findByEmail(email)
-//                .orElseGet(() -> {
-//                    User newUser = new User();
-//                    newUser.setEmail(email);
-//                    newUser.setFirstName(firstName);
-//                    newUser.setLastName(lastName);
-//                    String roleName = roles.iterator().next().getAuthority();
-//                    Role roleEntity = roleRepository.findByName(roleName)
-//                            .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
-//
-//                    newUser.setRole(roleEntity);
-//
-//                    return userRepository.save(newUser);
-//                });
-//    }
 
     public User getOrCreateUser(String email, String firstName, String lastName, Collection<GrantedAuthority> roles) {
 

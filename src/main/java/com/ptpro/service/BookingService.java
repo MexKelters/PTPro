@@ -1,5 +1,7 @@
 package com.ptpro.service;
 
+import com.ptpro.dto.response.BookingResponse;
+import com.ptpro.mapper.BookingMapper;
 import com.ptpro.model.Booking;
 import com.ptpro.model.Session;
 import com.ptpro.model.User;
@@ -20,42 +22,59 @@ public class BookingService {
     private final SessionService sessionService;
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
+    private final BookingMapper bookingMapper;
 
-    public BookingService(BookingRepository bookingRepository, SessionService sessionService, SessionRepository sessionRepository, UserRepository userRepository) {
+    public BookingService(BookingRepository bookingRepository,
+                          SessionService sessionService,
+                          SessionRepository sessionRepository,
+                          UserRepository userRepository,
+                          BookingMapper bookingMapper) {
         this.bookingRepository = bookingRepository;
         this.sessionService = sessionService;
         this.sessionRepository = sessionRepository;
         this.userRepository = userRepository;
+        this.bookingMapper = bookingMapper;
     }
 
-    public List<Booking> getBookingsByUser(Long userId) {
+    public List<BookingResponse> getBookingsByUser(Long userId) {
         List<Booking> bookings = bookingRepository.findAllByUserId(userId);
         if (bookings.isEmpty()) {
             throw new RuntimeException("Geen bookings gevonden voor user met id: " + userId);
         }
-        return bookings;
+        List<BookingResponse> dtos = new ArrayList<>();
+        for (Booking booking : bookings) {
+            dtos.add(bookingMapper.toResponse(booking));
+        }
+        return dtos;
     }
 
-    public List<Booking> getBookingsByTrainer(Long trainerId) {
+    public List<BookingResponse> getBookingsByTrainer(Long trainerId) {
         List<Booking> bookings = bookingRepository.findAllByTrainerId(trainerId);
         if (bookings.isEmpty()) {
             throw new RuntimeException("Geen bookings gevonden voor trainer met id: " + trainerId);
         }
-        return bookings;
+        List<BookingResponse> dtos = new ArrayList<>();
+        for (Booking booking : bookings) {
+            dtos.add(bookingMapper.toResponse(booking));
+        }
+        return dtos;
     }
 
     @Transactional
-    public Booking createBooking(Long sessionId, Long userId) {
-        Session session = sessionRepository.findById(sessionId).orElseThrow(() -> new RuntimeException("Sessie niet gevonden met id: " + sessionId));
+    public BookingResponse createBooking(Long sessionId, Long userId) {
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new RuntimeException("Sessie niet gevonden met id: " + sessionId));
 
         if (!session.isAvailable()) {
             throw new RuntimeException("Sessie is niet meer beschikbaar");
         }
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User niet gevonden met id: " + userId));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User niet gevonden met id: " + userId));
 
         session.setAvailable(false);
         sessionRepository.save(session);
+
         Booking booking = new Booking();
         booking.setSession(session);
         booking.setStatus(true);
@@ -65,9 +84,9 @@ public class BookingService {
         users.add(user);
         booking.setUsers(users);
 
-        return bookingRepository.save(booking);
+        Booking savedBooking = bookingRepository.save(booking);
+        return bookingMapper.toResponse(savedBooking);
     }
-
 
     @Transactional
     public void cancelBooking(Long bookingId) {
