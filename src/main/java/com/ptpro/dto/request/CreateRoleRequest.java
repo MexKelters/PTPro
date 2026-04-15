@@ -1,31 +1,20 @@
+
 package com.ptpro.dto.request;
 
-import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class CreateRoleRequest {
 
-    public class Role {
+    @NotNull(message = "ID mag niet leeg zijn")
+    private Long id;
 
-        @Id
-        private Long id;
+    @NotBlank(message = "Naam mag niet leeg zijn")
+    private String name;
 
-        private String name;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
-
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 }
