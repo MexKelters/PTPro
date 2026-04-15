@@ -24,7 +24,6 @@ public class TrainingScheduleController {
     }
 
     // FE-18
-    @PreAuthorize("hasRole('TRAINER')")
     @PostMapping("/upload/{trainerId}")
     public ResponseEntity<TrainingScheduleResponse> uploadSchedule(@PathVariable Long trainerId,
                                                            @RequestParam("file") MultipartFile file) throws IOException {
@@ -32,7 +31,6 @@ public class TrainingScheduleController {
     }
 
     // FE-19
-    @PreAuthorize("hasRole('TRAINER')")
     @PutMapping("/{scheduleId}/assign/{userId}")
     public ResponseEntity<TrainingScheduleResponse> assignToUser(@PathVariable Long scheduleId,
                                                          @PathVariable Long userId) {
@@ -40,14 +38,12 @@ public class TrainingScheduleController {
     }
 
     // FE-20
-    @PreAuthorize("hasAnyRole('USER', 'TRAINER')")
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<TrainingScheduleResponse>> getSchedulesByUser(@PathVariable Long userId) {
         return ResponseEntity.ok(trainingScheduleService.getSchedulesByUser(userId));
     }
 
     // FE-20
-    @PreAuthorize("hasAnyRole('USER', 'TRAINER')")
     @GetMapping("/download/{scheduleId}")
     public ResponseEntity<byte[]> downloadSchedule(@PathVariable Long scheduleId) {
         TrainingSchedule schedule = trainingScheduleService.getScheduleById(scheduleId);
@@ -60,14 +56,12 @@ public class TrainingScheduleController {
     }
 
     // FE-21
-    @PreAuthorize("hasRole('TRAINER')")
     @GetMapping("/trainer/{trainerId}")
     public ResponseEntity<List<TrainingScheduleResponse>> getSchedulesByTrainer(@PathVariable Long trainerId) {
         return ResponseEntity.ok(trainingScheduleService.getSchedulesByTrainer(trainerId));
     }
 
     // FE-21
-    @PreAuthorize("hasRole('TRAINER')")
     @DeleteMapping("/{scheduleId}/trainer/{trainerId}")
     public ResponseEntity<Void> deleteSchedule(@PathVariable Long scheduleId,
                                                @PathVariable Long trainerId) {

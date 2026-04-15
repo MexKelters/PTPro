@@ -39,7 +39,9 @@ public class SecurityConfig {
         return http
                 .httpBasic(hp -> hp.disable())
                 .csrf(csrf->csrf.disable())
-                .cors(cors->{})
+                .cors(cors -> {
+                        }
+                )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter())
@@ -48,41 +50,34 @@ public class SecurityConfig {
 
 
                 .authorizeHttpRequests(authorize -> authorize
-                        // Auth - iedereen
-                        .requestMatchers("/auth/**").permitAll()
-                        // Roles - alleen admin
-                        .requestMatchers(HttpMethod.GET, "/roles/**").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/roles/**").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/roles/**").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/roles/**").hasAuthority("ADMIN")
-                        // Users
-                        .requestMatchers(HttpMethod.POST, "/user/user").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/user/users").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/user/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/user/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/user/**").hasAuthority("ADMIN")
-                        // Trainers
-                        .requestMatchers(HttpMethod.GET, "/trainer/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/trainer/**").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/trainer/**").hasAnyAuthority("TRAINER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/trainer/**").hasAuthority("ADMIN")
-                        // Sessions
-                        .requestMatchers(HttpMethod.GET, "/session/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/session/**").hasAuthority("TRAINER")
-                        .requestMatchers(HttpMethod.PUT, "/session/**").hasAuthority("TRAINER")
-                        // Bookings
-                        .requestMatchers(HttpMethod.GET, "/bookings/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/bookings/**").hasAuthority("USER")
-                        .requestMatchers(HttpMethod.DELETE, "/bookings/**").hasAnyAuthority("USER", "TRAINER")
-                        // Training Schedules
-                        .requestMatchers(HttpMethod.GET, "/training-schedules/user/**").hasAuthority("USER")
-                        .requestMatchers(HttpMethod.GET, "/training-schedules/download/**").hasAnyAuthority("USER", "TRAINER")
-                        .requestMatchers(HttpMethod.GET, "/training-schedules/trainer/**").hasAuthority("TRAINER")
-                        .requestMatchers(HttpMethod.POST, "/training-schedules/**").hasAuthority("TRAINER")
-                        .requestMatchers(HttpMethod.PUT, "/training-schedules/**").hasAuthority("TRAINER")
-                        .requestMatchers(HttpMethod.DELETE, "/training-schedules/**").hasAuthority("TRAINER")
+                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/roles/**").hasAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/roles/**").hasAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/roles/**").hasAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/roles/**").hasAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/user/user").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/user/users").hasAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/user/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/user/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/user/**").hasAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/trainer/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/trainer/**").hasAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/trainer/**").hasAnyAuthority("TRAINER", "ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/trainer/**").hasAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/session/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/session/**").hasAnyAuthority("TRAINER", "ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/session/**").hasAnyAuthority("TRAINER", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/bookings/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/bookings/**").hasAnyAuthority("USER", "ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/bookings/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/training-schedules/user/**").hasAnyAuthority("USER", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/training-schedules/download/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/training-schedules/trainer/**").hasAnyAuthority("TRAINER", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/training-schedules/**").hasAnyAuthority("TRAINER", "ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/training-schedules/**").hasAnyAuthority("TRAINER", "ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/training-schedules/**").hasAnyAuthority("TRAINER", "ADMIN")
 
-                        .anyRequest().authenticated()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
@@ -101,6 +96,7 @@ public class SecurityConfig {
 
     }
 
+
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
@@ -109,7 +105,7 @@ public class SecurityConfig {
             public Collection<GrantedAuthority> convert(Jwt source) {
                 Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
                 for (String authority : getAuthorities(source)) {
-                    grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + authority));
+                    grantedAuthorities.add(new SimpleGrantedAuthority(authority));
                 }
                 return grantedAuthorities;
             }

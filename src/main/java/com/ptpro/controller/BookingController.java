@@ -20,7 +20,6 @@ public class BookingController {
     }
 
     //FE-16
-    @PreAuthorize("hasAnyRole('USER', 'TRAINER')")
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<BookingResponse>> getBookingsByUser(@PathVariable Long userId) {
         List<BookingResponse> bookings = bookingService.getBookingsByUser(userId);
@@ -29,7 +28,6 @@ public class BookingController {
 
     //FE-14
     //FE-15
-    @PreAuthorize("hasRole('USER')")
     @PostMapping("/create/{sessionId}/{userId}")
     public ResponseEntity<BookingResponse> createBooking(@PathVariable Long sessionId,
                                                  @PathVariable Long userId) {
@@ -39,7 +37,6 @@ public class BookingController {
 
     //FE-27
     //FE-17
-    @PreAuthorize("hasAnyRole('USER', 'TRAINER')")
     @DeleteMapping("/cancel/{bookingId}")
     public ResponseEntity<Void> cancelBooking(@PathVariable Long bookingId) {
         bookingService.cancelBooking(bookingId);
