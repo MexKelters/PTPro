@@ -1,5 +1,6 @@
 package com.ptpro.controller;
 
+import com.ptpro.dto.response.BookingResponse;
 import com.ptpro.model.Booking;
 import com.ptpro.service.BookingService;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,8 @@ public class BookingController {
     //FE-16
     @PreAuthorize("hasAnyRole('USER', 'TRAINER')")
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Booking>> getBookingsByUser(@PathVariable Long userId) {
-        List<Booking> bookings = bookingService.getBookingsByUser(userId);
+    public ResponseEntity<List<BookingResponse>> getBookingsByUser(@PathVariable Long userId) {
+        List<BookingResponse> bookings = bookingService.getBookingsByUser(userId);
         return ResponseEntity.ok(bookings);
     }
 
@@ -30,9 +31,9 @@ public class BookingController {
     //FE-15
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/create/{sessionId}/{userId}")
-    public ResponseEntity<Booking> createBooking(@PathVariable Long sessionId,
+    public ResponseEntity<BookingResponse> createBooking(@PathVariable Long sessionId,
                                                  @PathVariable Long userId) {
-        Booking booking = bookingService.createBooking(sessionId, userId);
+        BookingResponse booking = bookingService.createBooking(sessionId, userId);
         return ResponseEntity.ok(booking);
     }
 

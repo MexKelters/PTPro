@@ -38,7 +38,7 @@ public class TrainerController {
     //FE-7
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<CreateTrainerRequest> addTrainer(@RequestBody CreateTrainerRequest createTrainerRequest) {
+    public ResponseEntity<TrainerResponse> addTrainer(@RequestBody CreateTrainerRequest createTrainerRequest) {
         return ResponseEntity.ok(trainerService.addTrainer(createTrainerRequest));
     }
 

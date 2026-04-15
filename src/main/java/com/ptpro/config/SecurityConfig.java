@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -47,11 +48,40 @@ public class SecurityConfig {
 
 
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/publicInfo").permitAll()
-                        .requestMatchers("/user/**").permitAll()
-                        .requestMatchers("/trainer/*").permitAll()
-                        .requestMatchers("/auth/*").permitAll()
-                        .requestMatchers("*/sessions/*").permitAll()
+                        // Auth - iedereen
+                        .requestMatchers("/auth/**").permitAll()
+                        // Roles - alleen admin
+                        .requestMatchers(HttpMethod.GET, "/roles/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/roles/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/roles/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/roles/**").hasAuthority("ADMIN")
+                        // Users
+                        .requestMatchers(HttpMethod.POST, "/user/user").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/user/users").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/user/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/user/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/user/**").hasAuthority("ADMIN")
+                        // Trainers
+                        .requestMatchers(HttpMethod.GET, "/trainer/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/trainer/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/trainer/**").hasAnyAuthority("TRAINER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/trainer/**").hasAuthority("ADMIN")
+                        // Sessions
+                        .requestMatchers(HttpMethod.GET, "/session/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/session/**").hasAuthority("TRAINER")
+                        .requestMatchers(HttpMethod.PUT, "/session/**").hasAuthority("TRAINER")
+                        // Bookings
+                        .requestMatchers(HttpMethod.GET, "/bookings/**").hasAnyAuthority("USER", "TRAINER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/bookings/**").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/bookings/**").hasAnyAuthority("USER", "TRAINER")
+                        // Training Schedules
+                        .requestMatchers(HttpMethod.GET, "/training-schedules/user/**").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.GET, "/training-schedules/download/**").hasAnyAuthority("USER", "TRAINER")
+                        .requestMatchers(HttpMethod.GET, "/training-schedules/trainer/**").hasAuthority("TRAINER")
+                        .requestMatchers(HttpMethod.POST, "/training-schedules/**").hasAuthority("TRAINER")
+                        .requestMatchers(HttpMethod.PUT, "/training-schedules/**").hasAuthority("TRAINER")
+                        .requestMatchers(HttpMethod.DELETE, "/training-schedules/**").hasAuthority("TRAINER")
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
