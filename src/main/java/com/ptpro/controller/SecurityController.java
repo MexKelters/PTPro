@@ -20,7 +20,8 @@ public class SecurityController {
         this.userService = userService;
     }
 
-
+    //Nog uitwerken na gesprek docent
+    //Moet ik met het keycloak uuid mijn model vullen ?
     @GetMapping("/hello")
     public String hallo(JwtAuthenticationToken jwtAuthenticationToken) {
         String email = jwtAuthenticationToken.getToken().getClaimAsString("email");
