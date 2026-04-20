@@ -1,7 +1,10 @@
 package com.ptpro.service;
 
+import com.ptpro.dto.request.CreateUserRequest;
+import com.ptpro.dto.request.UpdateUserRequest;
 import com.ptpro.dto.response.UserResponse;
 import com.ptpro.mapper.UserMapper;
+import com.ptpro.model.Role;
 import com.ptpro.model.User;
 import com.ptpro.repository.RoleRepository;
 import com.ptpro.repository.UserRepository;
@@ -13,12 +16,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -87,37 +93,164 @@ class UserServiceTest {
 
     @Test
     void getUserById() {
-        //Arrange
+        // Arrange
+        User user = new User();
+        user.setId(1L);
+        user.setFirstName("Mex");
+        user.setEmail("mex@hotmail.com");
 
-        //Act
-        //Assert
+        UserResponse response = new UserResponse();
+        response.setFirstName("Mex");
+        response.setEmail("mex@hotmail.com");
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userMapper.toResponse(user)).thenReturn(response);
+
+        // Act
+        UserResponse resultaat = userService.getUserById(1L);
+
+        // Assert
+        assertNotNull(resultaat);
+        assertEquals("Mex", resultaat.getFirstName());
+        verify(userRepository, times(1)).findById(1L);
     }
 
     @Test
     void addUser() {
-        //Arrange
-        //Act
-        //Assert
+        // Arrange
+        CreateUserRequest request = new CreateUserRequest();
+        request.setFirstName("Mex");
+        request.setLastName("Kelters");
+        request.setEmail("mex@hotmail.com");
+        request.setRoleId(2L);
+
+        Role role = new Role();
+        role.setId(2L);
+
+        User newUser = new User();
+        newUser.setFirstName("Mex");
+        newUser.setLastName("Kelters");
+        newUser.setEmail("mex@hotmail.com");
+
+        User savedUser = new User();
+        savedUser.setId(1L);
+        savedUser.setFirstName("Mex");
+        savedUser.setLastName("Kelters");
+        savedUser.setEmail("mex@hotmail.com");
+        savedUser.setRole(role);
+
+        UserResponse response = new UserResponse();
+        response.setFirstName("Mex");
+        response.setEmail("mex@hotmail.com");
+
+        when(userMapper.toEntity(request)).thenReturn(newUser);
+        when(entityManager.getReference(Role.class, 2L)).thenReturn(role);
+        when(userRepository.save(newUser)).thenReturn(savedUser);
+        when(userMapper.toResponse(savedUser)).thenReturn(response);
+
+        // Act
+        UserResponse resultaat = userService.addUser(request);
+
+        // Assert
+        assertNotNull(resultaat);
+        assertEquals("Mex", resultaat.getFirstName());
+        verify(userRepository, times(1)).save(newUser);
+        verify(entityManager, times(1)).getReference(Role.class, 2L);
     }
 
     @Test
     void updateUser() {
-        //Arrange
-        //Act
-        //Assert
+        // Arrange
+        UpdateUserRequest request = new UpdateUserRequest();
+        request.setFirstName("UpdatedName");
+        request.setEmail("updated@hotmail.com");
+
+        User existingUser = new User();
+        existingUser.setId(1L);
+        existingUser.setFirstName("OldName");
+        existingUser.setEmail("old@hotmail.com");
+
+        UserResponse response = new UserResponse();
+        response.setFirstName("UpdatedName");
+        response.setEmail("updated@hotmail.com");
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
+        when(userMapper.toResponse(existingUser)).thenReturn(response);
+
+        // Act
+        UserResponse resultaat = userService.updateUser(1L, request);
+
+        // Assert
+        assertNotNull(resultaat);
+        assertEquals("UpdatedName", resultaat.getFirstName());
+        verify(userMapper, times(1)).updateEntity(existingUser, request);
+        verify(userRepository, times(1)).save(existingUser);
     }
+
 
     @Test
     void deleteUser() {
-        //Arrange
-        //Act
-        //Assert
+        // Arrange
+        Long id = 1L;
+        doNothing().when(userRepository).deleteById(id);
+
+        // Act
+        userService.deleteUser(id);
+
+        // Assert
+        verify(userRepository, times(1)).deleteById(id);
     }
 
     @Test
-    void getOrCreateUser() {
-        //Arrange
-        //Act
-        //Assert
+    void getOrCreateUser_whenUserAlreadyExists_shouldReturnExistingUser() {
+        // Arrange
+        String email = "mex@hotmail.com";
+        User existingUser = new User();
+        existingUser.setId(1L);
+        existingUser.setEmail(email);
+        existingUser.setFirstName("Mex");
+        existingUser.setLastName("Kelters");
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(existingUser));
+
+        // Act
+        User resultaat = userService.getOrCreateUser(email, "Mex", "Kelters", authorities);
+
+        // Assert
+        assertNotNull(resultaat);
+        assertEquals(email, resultaat.getEmail());
+        verify(userRepository, never()).save(any());
+        verify(entityManager, never()).getReference(any(), any());
+    }
+
+    @Test
+    void getOrCreateUser_whenUserDoesNotExist_shouldCreateAndSaveNewUser() {
+        // Arrange
+        String email = "nieuw@hotmail.com";
+        Role defaultRole = new Role();
+        defaultRole.setId(1L);
+
+        User savedUser = new User();
+        savedUser.setId(5L);
+        savedUser.setEmail(email);
+        savedUser.setFirstName("Nieuw");
+        savedUser.setLastName("Gebruiker");
+        savedUser.setRole(defaultRole);
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+        when(entityManager.getReference(Role.class, 1L)).thenReturn(defaultRole);
+        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+
+        // Act
+        User resultaat = userService.getOrCreateUser(email, "Nieuw", "Gebruiker", authorities);
+
+        // Assert
+        assertNotNull(resultaat);
+        assertEquals(email, resultaat.getEmail());
+        verify(userRepository, times(1)).save(any(User.class));
+        verify(entityManager, times(1)).getReference(Role.class, 1L);
     }
 }
+

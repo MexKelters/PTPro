@@ -25,6 +25,9 @@ import java.util.Map;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri:}")
+    private String jwkSetUri;
+
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     private String issuer;
 
@@ -86,7 +89,9 @@ public class SecurityConfig {
 
     public JwtDecoder jwtDecoder() {
 
-        NimbusJwtDecoder jwtDecoder = JwtDecoders.fromOidcIssuerLocation(issuer);
+        NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder
+                .withJwkSetUri(jwkSetUri != null ? jwkSetUri : issuer + "/protocol/openid-connect/certs")
+                .build();
         OAuth2TokenValidator<Jwt> audienceValidator = new JwtAudienceValidator(audience);
         OAuth2TokenValidator<Jwt> withIssuer = JwtValidators.createDefaultWithIssuer(issuer);
         OAuth2TokenValidator<Jwt> withAudience = new DelegatingOAuth2TokenValidator<>(withIssuer, audienceValidator);
