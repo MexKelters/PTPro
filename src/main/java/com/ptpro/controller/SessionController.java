@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/session")
+@RequestMapping("/api/v1/sessions")
 public class SessionController {
 
     private final SessionService sessionService;
@@ -24,25 +24,25 @@ public class SessionController {
     }
 
     //FE-10
-    @PostMapping("/api/v1/sessions/{id}")
+    @PostMapping("/{id}")
             public ResponseEntity<SessionResponse>createSession(@PathVariable Long id,@Valid @RequestBody CreateSessionsRequest createSessionsRequest){
             return ResponseEntity.ok(sessionService.createSession(id, createSessionsRequest));
     }
 
     //FE-13
-    @GetMapping("/api/v1/sessions/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<List<SessionResponse>>getAll(@PathVariable Long id){
         return ResponseEntity.ok(sessionService.getAll(id));
     }
 
     //FE-12
-    @GetMapping("/api/v1/sessions/{id}/available")
+    @GetMapping("/{id}/available")
     public ResponseEntity<List<SessionResponse>>getAllAvailable(@PathVariable Long id){
         return ResponseEntity.ok(sessionService.getAllAvailable(id));
     }
 
     //FE-11
-    @PutMapping("/api/v1/sessions/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<SessionResponse> setAvailable(@PathVariable Long id,
                                                         @Valid @RequestBody UpdateSessionRequest request) {
         return ResponseEntity.ok(sessionService.updateSession(id, request));

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/bookings")
+@RequestMapping("/api/v1/bookings")
 public class BookingController {
 
     private final BookingService bookingService;
@@ -20,7 +20,7 @@ public class BookingController {
     }
 
     //FE-16
-    @GetMapping("/api/v1/bookings/user/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<BookingResponse>> getBookingsByUser(@PathVariable Long userId) {
         List<BookingResponse> bookings = bookingService.getBookingsByUser(userId);
         return ResponseEntity.ok(bookings);
@@ -28,7 +28,7 @@ public class BookingController {
 
     //FE-14
     //FE-15
-    @PostMapping("/api/v1/bookings/{sessionId}/{userId}")
+    @PostMapping("/{sessionId}/{userId}")
     public ResponseEntity<BookingResponse> createBooking(@PathVariable Long sessionId,
                                                  @PathVariable Long userId) {
         BookingResponse booking = bookingService.createBooking(sessionId, userId);
@@ -37,7 +37,7 @@ public class BookingController {
 
     //FE-27
     //FE-17
-    @DeleteMapping("/api/v1/bookings/{bookingId}")
+    @DeleteMapping("/{bookingId}")
     public ResponseEntity<Void> cancelBooking(@PathVariable Long bookingId) {
         bookingService.cancelBooking(bookingId);
         return ResponseEntity.noContent().build();

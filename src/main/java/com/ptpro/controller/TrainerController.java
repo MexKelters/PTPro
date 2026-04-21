@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/trainer")
+@RequestMapping("/api/v1/trainers")
 public class TrainerController {
 
     private final TrainerService trainerService;
@@ -23,32 +23,32 @@ public class TrainerController {
     }
 
     //FE-8
-    @GetMapping("/api/v1/trainers")
+    @GetMapping
     public ResponseEntity<List<TrainerResponse>> getAllTrainers() {
         return ResponseEntity.ok(trainerService.getAllTrainers());
     }
 
     //FE-26
-    @GetMapping("/api/v1/trainers/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<TrainerResponse> getTrainerById(@PathVariable Long id) {
         return ResponseEntity.ok(trainerService.getById(id));
     }
 
     //FE-7
-    @PostMapping("/api/v1/trainers")
+    @PostMapping
     public ResponseEntity<TrainerResponse> addTrainer(@Valid  @RequestBody CreateTrainerRequest createTrainerRequest) {
         return ResponseEntity.ok(trainerService.addTrainer(createTrainerRequest));
     }
 
     //FE-9
-    @PutMapping("/api/v1/trainers/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<TrainerResponse> updateTrainer(
             @PathVariable Long id,
             @RequestBody UpdateTrainerRequest updateTrainerRequest) {
         return ResponseEntity.ok(trainerService.updateTrainer(id, updateTrainerRequest));
     }
 
-    @DeleteMapping("/api/v1/trainers/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<TrainerResponse> deleteTrainer(@PathVariable Long id) {
         trainerService.deleteTrainer(id);
         return null;

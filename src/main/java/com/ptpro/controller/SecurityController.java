@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 public class SecurityController {
 
     private final UserService userService;
@@ -21,7 +21,7 @@ public class SecurityController {
     }
 
     //Moet nog met DTO's werken hier!!!!!
-    @GetMapping("/api/v1/auth/hello")
+    @GetMapping("/hello")
     public String hallo(JwtAuthenticationToken jwtAuthenticationToken) {
         String email = jwtAuthenticationToken.getToken().getClaimAsString("email");
         String voorNaam = jwtAuthenticationToken.getToken().getClaimAsString("given_name");
@@ -31,7 +31,7 @@ public class SecurityController {
         return email + " " + voorNaam + " " + achterNaam + " " + authorities;
     }
 
-    @GetMapping("/api/v1/auth/hello-user")
+    @GetMapping("/hello-user")
     public String halloUser(JwtAuthenticationToken jwtAuthenticationToken) {
         String email = jwtAuthenticationToken.getToken().getClaimAsString("email");
         String voorNaam = jwtAuthenticationToken.getToken().getClaimAsString("given_name");

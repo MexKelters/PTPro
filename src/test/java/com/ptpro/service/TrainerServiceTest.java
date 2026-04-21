@@ -143,8 +143,7 @@ class TrainerServiceTest {
     @Test
     void deleteTrainer_shouldCallDeleteById() {
         // Arrange
-        doNothing().when(trainerRepository).deleteById(1L);
-
+        when(trainerRepository.existsById(1L)).thenReturn(true);
         // Act
         trainerService.deleteTrainer(1L);
 

@@ -191,14 +191,13 @@ class UserServiceTest {
     @Test
     void deleteUser() {
         // Arrange
-        Long id = 1L;
-        doNothing().when(userRepository).deleteById(id);
+        when(userRepository.existsById(1L)).thenReturn(true);
 
         // Act
-        userService.deleteUser(id);
+        userService.deleteUser(1L);
 
         // Assert
-        verify(userRepository, times(1)).deleteById(id);
+        verify(userRepository, times(1)).deleteById(1L);
     }
 
     @Test

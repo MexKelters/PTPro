@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/training-schedules")
+@RequestMapping("/api/v1/training-schedules")
 public class TrainingScheduleController {
 
     private final TrainingScheduleService trainingScheduleService;
@@ -24,27 +24,27 @@ public class TrainingScheduleController {
     }
 
     // FE-18
-    @PostMapping("/api/v1/training-schedules/upload/{trainerId}")
+    @PostMapping("/upload/{trainerId}")
     public ResponseEntity<TrainingScheduleResponse> uploadSchedule(@PathVariable Long trainerId,
                                                            @RequestParam("file") MultipartFile file) throws IOException {
         return ResponseEntity.ok(trainingScheduleService.uploadSchedule(trainerId, file));
     }
 
     // FE-19
-    @PutMapping("/api/v1/training-schedules/{scheduleId}/assign/{userId}")
+    @PutMapping("/{scheduleId}/assign/{userId}")
     public ResponseEntity<TrainingScheduleResponse> assignToUser(@PathVariable Long scheduleId,
                                                          @PathVariable Long userId) {
         return ResponseEntity.ok(trainingScheduleService.assignToUser(scheduleId, userId));
     }
 
     // FE-20
-    @GetMapping("/api/v1/training-schedules/user/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<TrainingScheduleResponse>> getSchedulesByUser(@PathVariable Long userId) {
         return ResponseEntity.ok(trainingScheduleService.getSchedulesByUser(userId));
     }
 
     // FE-20
-    @GetMapping("/api/v1/training-schedules/download/{scheduleId}")
+    @GetMapping("/download/{scheduleId}")
     public ResponseEntity<byte[]> downloadSchedule(@PathVariable Long scheduleId) {
         TrainingSchedule schedule = trainingScheduleService.getScheduleById(scheduleId);
 
@@ -56,13 +56,13 @@ public class TrainingScheduleController {
     }
 
     // FE-21
-    @GetMapping("/api/v1/training-schedules/trainer/{trainerId}")
+    @GetMapping("/trainer/{trainerId}")
     public ResponseEntity<List<TrainingScheduleResponse>> getSchedulesByTrainer(@PathVariable Long trainerId) {
         return ResponseEntity.ok(trainingScheduleService.getSchedulesByTrainer(trainerId));
     }
 
     // FE-21
-    @DeleteMapping("/api/v1/training-schedules/{scheduleId}/trainer/{trainerId}")
+    @DeleteMapping("/{scheduleId}/trainer/{trainerId}")
     public ResponseEntity<Void> deleteSchedule(@PathVariable Long scheduleId,
                                                @PathVariable Long trainerId) {
         trainingScheduleService.deleteSchedule(scheduleId, trainerId);
