@@ -20,9 +20,8 @@ public class SecurityController {
         this.userService = userService;
     }
 
-    //Nog uitwerken na gesprek docent
-    //Moet ik met het keycloak uuid mijn model vullen ?
-    @GetMapping("/hello")
+    //Moet nog met DTO's werken hier!!!!!
+    @GetMapping("/api/v1/auth/hello")
     public String hallo(JwtAuthenticationToken jwtAuthenticationToken) {
         String email = jwtAuthenticationToken.getToken().getClaimAsString("email");
         String voorNaam = jwtAuthenticationToken.getToken().getClaimAsString("given_name");
@@ -32,7 +31,7 @@ public class SecurityController {
         return email + " " + voorNaam + " " + achterNaam + " " + authorities;
     }
 
-    @GetMapping("/helloUser")
+    @GetMapping("/api/v1/auth/hello-user")
     public String halloUser(JwtAuthenticationToken jwtAuthenticationToken) {
         String email = jwtAuthenticationToken.getToken().getClaimAsString("email");
         String voorNaam = jwtAuthenticationToken.getToken().getClaimAsString("given_name");

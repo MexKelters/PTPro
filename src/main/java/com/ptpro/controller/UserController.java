@@ -21,33 +21,33 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/api/v1/users")
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
 
     //FE-4
-    @GetMapping("/{id}")
+    @GetMapping("/api/v1/users/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
 
     }
 
 
-    @PostMapping("/user")
+    @PostMapping("/api/v1/users")
     public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest createUserRequest) {
         return ResponseEntity.ok(userService.addUser(createUserRequest));
     }
 
     //FE-5 (user)
     //FE-6 (admin)
-    @PutMapping("/{id}")
+    @PutMapping("/api/v1/users/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest updateUserRequest) {
         return ResponseEntity.ok(userService.updateUser(id, updateUserRequest));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/v1/users/{id}")
     public ResponseEntity<UserResponse> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return null;

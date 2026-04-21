@@ -65,7 +65,7 @@ class UserControllerIntegrationTest {
         // Arrange niet nodig
 
         // Act & Assert
-        mockMvc.perform(get("/user/users")
+        mockMvc.perform(get("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
@@ -79,7 +79,7 @@ class UserControllerIntegrationTest {
         Long id = userRepository.findByEmail("mex@hotmail.com").get().getId();
 
         // Act & Assert
-        mockMvc.perform(get("/user/{id}", id)
+        mockMvc.perform(get("/api/v1/users/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("Mex"))
