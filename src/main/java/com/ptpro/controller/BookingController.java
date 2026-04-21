@@ -20,7 +20,7 @@ public class BookingController {
     }
 
     //FE-16
-    @GetMapping("/user/{userId}")
+    @GetMapping("/api/v1/bookings/user/{userId}")
     public ResponseEntity<List<BookingResponse>> getBookingsByUser(@PathVariable Long userId) {
         List<BookingResponse> bookings = bookingService.getBookingsByUser(userId);
         return ResponseEntity.ok(bookings);
@@ -28,7 +28,7 @@ public class BookingController {
 
     //FE-14
     //FE-15
-    @PostMapping("/create/{sessionId}/{userId}")
+    @PostMapping("/api/v1/bookings/{sessionId}/{userId}")
     public ResponseEntity<BookingResponse> createBooking(@PathVariable Long sessionId,
                                                  @PathVariable Long userId) {
         BookingResponse booking = bookingService.createBooking(sessionId, userId);
@@ -37,7 +37,7 @@ public class BookingController {
 
     //FE-27
     //FE-17
-    @DeleteMapping("/cancel/{bookingId}")
+    @DeleteMapping("/api/v1/bookings/{bookingId}")
     public ResponseEntity<Void> cancelBooking(@PathVariable Long bookingId) {
         bookingService.cancelBooking(bookingId);
         return ResponseEntity.noContent().build();

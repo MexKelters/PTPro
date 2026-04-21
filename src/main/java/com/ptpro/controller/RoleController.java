@@ -22,28 +22,28 @@ public class RoleController {
     }
 
     //FE-1
-    @GetMapping
+    @GetMapping("/api/v1/roles")
     public ResponseEntity<List<RoleResponse>> getAllRoles() {
         return ResponseEntity.ok(roleService.getAllRoles());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/api/v1/roles/{id}")
     public ResponseEntity<RoleResponse> getRoleById(@PathVariable Long id) {
         return ResponseEntity.ok(roleService.getRoleById(id));
     }
 
-    @PostMapping
+    @PostMapping("/api/v1/roles")
     public ResponseEntity<RoleResponse> createRole(@RequestBody CreateRoleRequest request) {
         return ResponseEntity.ok(roleService.createRole(request));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/api/v1/roles/{id}")
     public ResponseEntity<RoleResponse> updateRole(@PathVariable Long id,
                                                    @Valid @RequestBody UpdateRoleRequest request) {
         return ResponseEntity.ok(roleService.updateRole(id, request));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/v1/roles/{id}")
     public ResponseEntity<Void> deleteRole(@PathVariable Long id) {
         roleService.deleteRole(id);
         return ResponseEntity.noContent().build();
