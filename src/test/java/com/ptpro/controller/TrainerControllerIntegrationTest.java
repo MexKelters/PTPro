@@ -71,7 +71,7 @@ class TrainerControllerIntegrationTest {
         // Arrange niet nodig
 
         // Act & Assert
-        mockMvc.perform(get("/trainer/all")
+        mockMvc.perform(get("/api/v1/trainers")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
@@ -84,7 +84,7 @@ class TrainerControllerIntegrationTest {
         Long id = trainerRepository.findAll().get(0).getId();
 
         // Act & Assert
-        mockMvc.perform(get("/trainer/{id}", id)
+        mockMvc.perform(get("/api/v1/trainers/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.specialization").value("Krachttraining"))

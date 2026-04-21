@@ -22,32 +22,32 @@ public class TrainerController {
     }
 
     //FE-8
-    @GetMapping("/all")
+    @GetMapping("/api/v1/trainers")
     public ResponseEntity<List<TrainerResponse>> getAllTrainers() {
         return ResponseEntity.ok(trainerService.getAllTrainers());
     }
 
     //FE-26
-    @GetMapping("/{id}")
+    @GetMapping("/api/v1/trainers/{id}")
     public ResponseEntity<TrainerResponse> getTrainerById(@PathVariable Long id) {
         return ResponseEntity.ok(trainerService.getById(id));
     }
 
     //FE-7
-    @PostMapping
+    @PostMapping("/api/v1/trainers")
     public ResponseEntity<TrainerResponse> addTrainer(@RequestBody CreateTrainerRequest createTrainerRequest) {
         return ResponseEntity.ok(trainerService.addTrainer(createTrainerRequest));
     }
 
     //FE-9
-    @PutMapping("/{id}")
+    @PutMapping("/api/v1/trainers/{id}")
     public ResponseEntity<TrainerResponse> updateTrainer(
             @PathVariable Long id,
             @RequestBody UpdateTrainerRequest updateTrainerRequest) {
         return ResponseEntity.ok(trainerService.updateTrainer(id, updateTrainerRequest));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/v1/trainers/{id}")
     public ResponseEntity<TrainerResponse> deleteTrainer(@PathVariable Long id) {
         trainerService.deleteTrainer(id);
         return null;

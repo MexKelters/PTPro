@@ -23,25 +23,25 @@ public class SessionController {
     }
 
     //FE-10
-    @PostMapping("/{id}")
+    @PostMapping("/api/v1/sessions/{id}")
             public ResponseEntity<SessionResponse>createSession(@PathVariable Long id, @RequestBody CreateSessionsRequest createSessionsRequest){
             return ResponseEntity.ok(sessionService.createSession(id, createSessionsRequest));
     }
 
     //FE-13
-    @GetMapping("/all/{id}")
+    @GetMapping("/api/v1/sessions/{id}")
     public ResponseEntity<List<SessionResponse>>getAll(@PathVariable Long id){
         return ResponseEntity.ok(sessionService.getAll(id));
     }
 
     //FE-12
-    @GetMapping("/all/available/{id}")
+    @GetMapping("/api/v1/sessions/{id}/available")
     public ResponseEntity<List<SessionResponse>>getAllAvailable(@PathVariable Long id){
         return ResponseEntity.ok(sessionService.getAllAvailable(id));
     }
 
     //FE-11
-    @PutMapping("/{id}/available")
+    @PutMapping("/api/v1/sessions/{id}")
     public ResponseEntity<SessionResponse> setAvailable(@PathVariable Long id,
                                                         @RequestBody UpdateSessionRequest request) {
         return ResponseEntity.ok(sessionService.updateSession(id, request));
