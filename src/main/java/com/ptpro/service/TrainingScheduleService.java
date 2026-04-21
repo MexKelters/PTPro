@@ -1,6 +1,8 @@
 package com.ptpro.service;
 
 import com.ptpro.dto.response.TrainingScheduleResponse;
+import com.ptpro.exception.ResourceNotFoundException;
+import com.ptpro.exception.UnauthorizedException;
 import com.ptpro.mapper.TrainingScheduleMapper;
 import com.ptpro.model.TrainingSchedule;
 import com.ptpro.model.Trainer;
@@ -41,7 +43,7 @@ public class TrainingScheduleService {
     @Transactional
     public TrainingScheduleResponse uploadSchedule(Long trainerId, MultipartFile file) throws IOException {
         Trainer trainer = trainerRepository.findById(trainerId)
-                .orElseThrow(() -> new RuntimeException("Trainer niet gevonden met id: " + trainerId));
+                .orElseThrow(() -> new ResourceNotFoundException("Trainer niet gevonden met id: " + trainerId));
 
         TrainingSchedule schedule = new TrainingSchedule();
         schedule.setTrainer(trainer);
@@ -56,10 +58,10 @@ public class TrainingScheduleService {
     @Transactional
     public TrainingScheduleResponse assignToUser(Long scheduleId, Long userId) {
         TrainingSchedule schedule = trainingScheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new RuntimeException("Schema niet gevonden met id: " + scheduleId));
+                .orElseThrow(() -> new ResourceNotFoundException("Schema niet gevonden met id: " + scheduleId));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User niet gevonden met id: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User niet gevonden met id: " + userId));
 
         schedule.setUser(user);
         TrainingSchedule savedSchedule = trainingScheduleRepository.save(schedule);
@@ -70,7 +72,7 @@ public class TrainingScheduleService {
     public List<TrainingScheduleResponse> getSchedulesByUser(Long userId) {
         List<TrainingSchedule> schedules = trainingScheduleRepository.findAllByUserId(userId);
         if (schedules.isEmpty()) {
-            throw new RuntimeException("Geen schema's gevonden voor user met id: " + userId);
+            throw new ResourceNotFoundException("Geen schema's gevonden voor user met id: " + userId);
         }
         List<TrainingScheduleResponse> dtos = new ArrayList<>();
         for (TrainingSchedule schedule : schedules) {
@@ -82,14 +84,14 @@ public class TrainingScheduleService {
 
     public TrainingSchedule getScheduleById(Long scheduleId) {
         return trainingScheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new RuntimeException("Schema niet gevonden met id: " + scheduleId));
+                .orElseThrow(() -> new ResourceNotFoundException("Schema niet gevonden met id: " + scheduleId));
     }
 
 
     public List<TrainingScheduleResponse> getSchedulesByTrainer(Long trainerId) {
         List<TrainingSchedule> schedules = trainingScheduleRepository.findAllByTrainerId(trainerId);
         if (schedules.isEmpty()) {
-            throw new RuntimeException("Geen schema's gevonden voor trainer met id: " + trainerId);
+            throw new ResourceNotFoundException("Geen schema's gevonden voor trainer met id: " + trainerId);
         }
         List<TrainingScheduleResponse> dtos = new ArrayList<>();
         for (TrainingSchedule schedule : schedules) {
@@ -102,10 +104,10 @@ public class TrainingScheduleService {
     @Transactional
     public void deleteSchedule(Long scheduleId, Long trainerId) {
         TrainingSchedule schedule = trainingScheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new RuntimeException("Schema niet gevonden met id: " + scheduleId));
+                .orElseThrow(() -> new ResourceNotFoundException("Schema niet gevonden met id: " + scheduleId));
 
         if (!schedule.getTrainer().getId().equals(trainerId)) {
-            throw new RuntimeException("Je hebt geen toegang om dit schema te verwijderen");
+            throw new UnauthorizedException("Je hebt geen toegang om dit schema te verwijderen");
         }
 
         trainingScheduleRepository.delete(schedule);

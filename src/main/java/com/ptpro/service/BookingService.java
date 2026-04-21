@@ -1,6 +1,7 @@
 package com.ptpro.service;
 
 import com.ptpro.dto.response.BookingResponse;
+import com.ptpro.exception.ResourceNotFoundException;
 import com.ptpro.mapper.BookingMapper;
 import com.ptpro.model.Booking;
 import com.ptpro.model.Session;
@@ -63,14 +64,14 @@ public class BookingService {
     @Transactional
     public BookingResponse createBooking(Long sessionId, Long userId) {
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new RuntimeException("Sessie niet gevonden met id: " + sessionId));
+                .orElseThrow(() -> new ResourceNotFoundException("Sessie niet gevonden met id: " + sessionId));
 
         if (!session.isAvailable()) {
-            throw new RuntimeException("Sessie is niet meer beschikbaar");
+            throw new ResourceNotFoundException("Sessie is niet meer beschikbaar");
         }
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User niet gevonden met id: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User niet gevonden met id: " + userId));
 
         session.setAvailable(false);
         sessionRepository.save(session);
@@ -91,7 +92,7 @@ public class BookingService {
     @Transactional
     public void cancelBooking(Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking niet gevonden met id: " + bookingId));
+                .orElseThrow(() -> new ResourceNotFoundException("Booking niet gevonden met id: " + bookingId));
 
         Session session = booking.getSession();
         session.setAvailable(true);

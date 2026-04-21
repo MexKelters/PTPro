@@ -3,6 +3,8 @@ package com.ptpro.service;
 import com.ptpro.dto.request.CreateTrainerRequest;
 import com.ptpro.dto.request.UpdateTrainerRequest;
 import com.ptpro.dto.response.TrainerResponse;
+import com.ptpro.exception.DuplicateResourceException;
+import com.ptpro.exception.ResourceNotFoundException;
 import com.ptpro.mapper.TrainerMapper;
 import com.ptpro.model.Trainer;
 import com.ptpro.model.User;
@@ -39,20 +41,19 @@ public class TrainerService {
     }
 
     public TrainerResponse getById(Long id) {
-        Optional<Trainer> trainer = trainerRepository.findById(id);
-        if (trainer.isPresent()) {
-            return trainerMapper.toResponse(trainer.get());
-        } else {
-            return null;
-        }
+        Trainer trainer = trainerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Trainer met id: " + id + " niet gevonden" ));
+        return trainerMapper.toResponse(trainer);
+
     }
 
     public TrainerResponse addTrainer(CreateTrainerRequest dto) {
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User niet gevonden met id: " + dto.getUserId()));
+                .orElseThrow(() -> new ResourceNotFoundException("User niet gevonden met id: " + dto.getUserId()));
 
         if (trainerRepository.existsByUserId(user.getId())) {
-            throw new RuntimeException("Trainer voor deze user bestaat al");
+            throw new DuplicateResourceException("Trainer voor deze user bestaat al");
         }
 
         Trainer trainer = trainerMapper.toEntity(dto);
@@ -64,13 +65,17 @@ public class TrainerService {
 
     public TrainerResponse updateTrainer(Long id, UpdateTrainerRequest dto) {
         Trainer trainer = trainerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Trainer niet gevonden met id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Trainer niet gevonden met id: " + id));
         trainerMapper.updateEntity(trainer, dto);
         trainerRepository.save(trainer);
         return trainerMapper.toResponse(trainer);
     }
 
     public void deleteTrainer(Long id) {
+        if (!trainerRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Trainer niet gevonden met id: " + id);
+        }
         trainerRepository.deleteById(id);
+
     }
 }

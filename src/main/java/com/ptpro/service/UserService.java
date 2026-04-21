@@ -4,6 +4,7 @@ package com.ptpro.service;
 import com.ptpro.dto.request.CreateUserRequest;
 import com.ptpro.dto.request.UpdateUserRequest;
 import com.ptpro.dto.response.UserResponse;
+import com.ptpro.exception.ResourceNotFoundException;
 import com.ptpro.mapper.UserMapper;
 import com.ptpro.model.Role;
 import com.ptpro.model.User;
@@ -41,11 +42,9 @@ public class UserService {
     }
 
     public UserResponse getUserById(Long id) {
-        Optional<User> oldUser = userRepository.findById(id);
-        if(oldUser.isPresent()){
-            return userMapper.toResponse(oldUser.get());
-        } else
-            return null;
+        User user = userRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("User met id " + id + " is niet gevonden"));
+        return userMapper.toResponse(user);
     }
 
     public UserResponse addUser(CreateUserRequest dto) {
@@ -62,13 +61,16 @@ public class UserService {
     public UserResponse updateUser(Long id, UpdateUserRequest request) {
 
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User met id: " + id + " is niet gevonden" ));
         userMapper.updateEntity(user, request);
         userRepository.save(user);
         return userMapper.toResponse(user);
     }
 
     public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new ResourceNotFoundException("User met id: " + id + " niet gevonden");
+        }
         userRepository.deleteById(id);
     }
 

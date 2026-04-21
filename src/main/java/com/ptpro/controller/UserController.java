@@ -5,8 +5,8 @@ import com.ptpro.dto.request.CreateUserRequest;
 import com.ptpro.dto.request.UpdateUserRequest;
 import com.ptpro.dto.response.UserResponse;
 import com.ptpro.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,36 +21,35 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/api/v1/users")
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
 
     //FE-4
-    @GetMapping("/{id}")
+    @GetMapping("/api/v1/users/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
 
     }
 
-
-    @PostMapping("/user")
-    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest createUserRequest) {
+    @PostMapping("/api/v1/users")
+    public ResponseEntity<UserResponse> createUser( @Valid @RequestBody CreateUserRequest createUserRequest) {
         return ResponseEntity.ok(userService.addUser(createUserRequest));
     }
 
     //FE-5 (user)
     //FE-6 (admin)
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest updateUserRequest) {
+    @PutMapping("/api/v1/users/{id}")
+    public ResponseEntity<UserResponse> updateUser( @PathVariable Long id, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
         return ResponseEntity.ok(userService.updateUser(id, updateUserRequest));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/v1/users/{id}")
     public ResponseEntity<UserResponse> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return null;
+        return ResponseEntity.noContent().build();
     }
 
 }

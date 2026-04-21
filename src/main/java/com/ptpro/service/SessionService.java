@@ -3,6 +3,7 @@ package com.ptpro.service;
 import com.ptpro.dto.request.CreateSessionsRequest;
 import com.ptpro.dto.request.UpdateSessionRequest;
 import com.ptpro.dto.response.SessionResponse;
+import com.ptpro.exception.ResourceNotFoundException;
 import com.ptpro.mapper.SessionMapper;
 import com.ptpro.model.Session;
 import com.ptpro.repository.SessionRepository;
@@ -25,7 +26,7 @@ public class SessionService {
 
     public SessionResponse createSession(Long id, CreateSessionsRequest createSessionsRequest) {
         Long idTrainer = trainerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Trainer niet gevonden met id: " + id))
+                .orElseThrow(() -> new ResourceNotFoundException("Trainer niet gevonden met id: " + id))
                 .getId();
 
         Session newSession = sessionMapper.toEntity(createSessionsRequest);
@@ -38,7 +39,7 @@ public class SessionService {
     public List<SessionResponse> getAll(Long id) {
         List<Session> sessions = sessionRepository.findByTrainerId(id);
         if (sessions.isEmpty()){
-            throw new RuntimeException("Geen sessies gevonden voor trainer met id" + id);
+            throw new ResourceNotFoundException("Geen sessies gevonden voor trainer met id" + id);
         }
         List<SessionResponse> dtos = new ArrayList<>();
         for(Session session : sessions){
@@ -51,7 +52,7 @@ public class SessionService {
     public List<SessionResponse> getAllAvailable(Long id) {
         List<Session> sessions = sessionRepository.getAllAvailable(id);
         if (sessions.isEmpty()){
-            throw new RuntimeException("Geen sessies gevonden voor trainer met id" + id);
+            throw new ResourceNotFoundException("Geen sessies gevonden voor trainer met id" + id);
         }
         List<SessionResponse> dtos = new ArrayList<>();
         for(Session session : sessions){

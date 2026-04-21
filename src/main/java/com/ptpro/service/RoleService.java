@@ -3,6 +3,7 @@ package com.ptpro.service;
 import com.ptpro.dto.request.CreateRoleRequest;
 import com.ptpro.dto.request.UpdateRoleRequest;
 import com.ptpro.dto.response.RoleResponse;
+import com.ptpro.exception.ResourceNotFoundException;
 import com.ptpro.mapper.RoleMapper;
 import com.ptpro.model.Role;
 import com.ptpro.repository.RoleRepository;
@@ -31,7 +32,7 @@ public class RoleService {
 
     public RoleResponse getRoleById(Long id) {
         Role role = roleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Role niet gevonden met id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Role niet gevonden met id: " + id));
         return roleMapper.toResponse(role);
     }
 
@@ -42,14 +43,14 @@ public class RoleService {
 
     public RoleResponse updateRole(Long id, UpdateRoleRequest request) {
         Role role = roleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Role niet gevonden met id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Role niet gevonden met id: " + id));
         roleMapper.updateEntity(role, request);
         return roleMapper.toResponse(roleRepository.save(role));
     }
 
     public void deleteRole(Long id) {
         if (!roleRepository.existsById(id)) {
-            throw new RuntimeException("Role niet gevonden met id: " + id);
+            throw new ResourceNotFoundException("Role niet gevonden met id: " + id);
         }
         roleRepository.deleteById(id);
     }
