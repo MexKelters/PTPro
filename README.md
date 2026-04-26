@@ -157,7 +157,7 @@ mvn clean package -DskipTests
 JAR uitvoeren:
 
 ```bash
-java --enable-preview -jar target/PTPro-0.0.1-SNAPSHOT.jar
+java  -jar target/PTPro-0.0.1-SNAPSHOT.jar
 ```
 
 Keycloak token ophalen:
