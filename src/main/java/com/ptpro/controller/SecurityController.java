@@ -20,7 +20,6 @@ public class SecurityController {
         this.userService = userService;
     }
 
-    //Moet nog met DTO's werken hier!!!!!
     @GetMapping("/hello")
     public String hallo(JwtAuthenticationToken jwtAuthenticationToken) {
         String email = jwtAuthenticationToken.getToken().getClaimAsString("email");

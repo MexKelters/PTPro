@@ -49,7 +49,7 @@ src/
         └── application-test.properties
 ```
 
-Gebruikte technieken: Java 24, Spring Boot 3.4.13, Spring Security + OAuth2, Keycloak, PostgreSQL, Hibernate/JPA, MapStruct 1.6.3, Jakarta Validation, JUnit 5, Mockito, MockMvc en H2 (tests).
+Gebruikte technieken: Java 21, Spring Boot 3.4.13, Spring Security + OAuth2, Keycloak, PostgreSQL, Hibernate/JPA, MapStruct 1.6.3, Jakarta Validation, JUnit 5, Mockito, MockMvc en H2 (tests).
 
 ---
 
