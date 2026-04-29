@@ -74,9 +74,6 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    /*
-    @Todo Dit nog regelen via een DTO voor het inleveren van de eindopdracht
-     */
     public User getOrCreateUser(String email, String firstName, String lastName, Collection<GrantedAuthority> roles) {
 
         return userRepository.findByEmail(email)
