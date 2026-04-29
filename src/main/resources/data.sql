@@ -1,9 +1,9 @@
 -- =========================
 -- ROLES (vaste IDs, blijven altijd 1-3)
 -- =========================
-INSERT INTO roles (id, name) VALUES (1, 'ROLE_USER');
+INSERT INTO roles (id, name) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO roles (id, name) VALUES (2, 'ROLE_TRAINER');
-INSERT INTO roles (id, name) VALUES (3, 'ROLE_ADMIN');
+INSERT INTO roles (id, name) VALUES (3, 'ROLE_USER');
 
 
 -- =========================
@@ -13,16 +13,16 @@ INSERT INTO users (first_name, last_name, email, password, role_id, create_at, u
 VALUES ('John', 'Doe', 'john@example.com', 'password123', 1, CURRENT_DATE, CURRENT_DATE);
 
 INSERT INTO users (first_name, last_name, email, password, role_id, create_at, update_at)
-VALUES ('Jane', 'Smith', 'jane@example.com', 'password123', 1, CURRENT_DATE, CURRENT_DATE);
+VALUES ('Jane', 'Smith', 'jane@example.com', 'password123', 3, CURRENT_DATE, CURRENT_DATE);
 
 INSERT INTO users (first_name, last_name, email, password, role_id, create_at, update_at)
 VALUES ('Mike', 'Trainer', 'mike@example.com', 'password123', 2, CURRENT_DATE, CURRENT_DATE);
 
 INSERT INTO users (first_name, last_name, email, password, role_id, create_at, update_at)
-VALUES ('Sarah', 'Trainer', 'sarah@example.com', 'password123', 2, CURRENT_DATE, CURRENT_DATE);
+VALUES ('Sarah', 'Trainer', 'sarah@example.com', 'password123', 3, CURRENT_DATE, CURRENT_DATE);
 
 INSERT INTO users (first_name, last_name, email, password, role_id, create_at, update_at)
-VALUES ('Alex', 'Johnson', 'alex@example.com', 'password123', 1, CURRENT_DATE, CURRENT_DATE);
+VALUES ('Alex', 'Johnson', 'alex@example.com', 'password123', 3, CURRENT_DATE, CURRENT_DATE);
 
 
 -- =========================

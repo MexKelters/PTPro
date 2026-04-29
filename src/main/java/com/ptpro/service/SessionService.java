@@ -52,7 +52,7 @@ public class SessionService {
     public List<SessionResponse> getAllAvailable(Long id) {
         List<Session> sessions = sessionRepository.getAllAvailable(id);
         if (sessions.isEmpty()){
-            throw new ResourceNotFoundException("Geen sessies gevonden voor trainer met id" + id);
+            throw new ResourceNotFoundException("Geen sessies gevonden voor trainer met id " + id);
         }
         List<SessionResponse> dtos = new ArrayList<>();
         for(Session session : sessions){

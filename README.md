@@ -12,7 +12,7 @@ PTPro verbindt personal trainers met hun klanten. Gebruikers kunnen een account 
 
 ## 2. Beschrijving van de web-API en functionaliteit
 
-De API draait op `http://localhost:8080`. Alle endpoints beginnen met `/api/v1/`.
+De API draait op `http://localhost:8081`. Alle endpoints beginnen met `/api/v1/`.
 
 De applicatie biedt de volgende functionaliteiten: gebruikersbeheer, trainerbeheer, sessies aanmaken en boeken, boekingen beheren en trainingsschema's uploaden en downloaden.
 
@@ -68,7 +68,7 @@ Gebruikte technieken: Java 24, Spring Boot 3.4.13, Spring Security + OAuth2, Key
 **Stap 1 — Repository klonen**
 
 ```bash
-git clone https://github.com/<jouw-gebruikersnaam>/PtPro.git
+git clone https://github.com/MexKelters/PtPro.git
 cd PtPro
 ```
 
@@ -89,13 +89,13 @@ Maak daarna in de Keycloak admin console (`http://localhost:9090`) een realm aan
 **Stap 4 — application.properties instellen**
 
 ```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/ptpro
-spring.datasource.username=ptpro_user
-spring.datasource.password=jouwwachtwoord
+spring.datasource.url=jdbc:postgresql://localhost:5432/demo
+spring.datasource.username=postgres
+spring.datasource.password=password
 
 spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:9090/realms/PtPro
 spring.security.oauth2.resourceserver.jwt.jwk-set-uri=http://localhost:9090/realms/PtPro/protocol/openid-connect/certs
-spring.security.oauth2.resourceserver.jwt.audiences=PtPro
+spring.security.oauth2.resourceserver.jwt.audiences=account
 ```
 
 **Stap 5 — Applicatie starten**
@@ -142,7 +142,7 @@ De testgebruikers staan in `src/main/resources/data.sql` en worden automatisch i
 | Sarah Coach | sarah@example.com | ROLE_TRAINER |
 | Admin User | admin@example.com | ROLE_ADMIN |
 
-Deze gebruikers moeten ook in Keycloak aangemaakt worden met de bijbehorende rol.
+Er zijn een paar test gebruikers aanwezig in de meegeleverde keycloak export en hoeven niet handmatig te worden aangemaakt.
 
 ---
 
@@ -167,6 +167,6 @@ POST http://localhost:9090/realms/PtPro/protocol/openid-connect/token
 
 grant_type=password
 client_id=PtPro
-username=<gebruikersnaam>
-password=<wachtwoord>
+username=test@hotmail.com
+password=Test12345
 ```
