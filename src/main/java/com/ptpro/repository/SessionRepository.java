@@ -9,6 +9,6 @@ import java.util.List;
 public interface SessionRepository extends JpaRepository<Session, Long> {
     List<Session> findByTrainerId(Long trainerId);
 
-    @Query(value = "SELECT * FROM sessions WHERE trainer_id = :trainerId AND available IS NOT true", nativeQuery = true)
+    @Query(value = "SELECT * FROM sessions WHERE trainer_id = :trainerId AND available = true", nativeQuery = true)
     List<Session> getAllAvailable(Long trainerId);
 }

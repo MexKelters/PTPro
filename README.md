@@ -55,7 +55,7 @@ Gebruikte technieken: Java 24, Spring Boot 3.4.13, Spring Security + OAuth2, Key
 
 ## 4. Benodigdheden
 
-- Java 24
+- Java 21
 - Maven 3.8+
 - PostgreSQL
 - Keycloak 24+
