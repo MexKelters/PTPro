@@ -3,6 +3,7 @@ package com.ptpro.service;
 import com.ptpro.dto.request.CreateUserRequest;
 import com.ptpro.dto.request.UpdateUserRequest;
 import com.ptpro.dto.response.UserResponse;
+import com.ptpro.exception.ResourceNotFoundException;
 import com.ptpro.mapper.UserMapper;
 import com.ptpro.model.Role;
 import com.ptpro.model.User;
@@ -22,8 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -77,7 +77,7 @@ class UserServiceTest {
         UserResponse userResponse2 = new UserResponse();
         userResponse2.setFirstName("Lee");
         userResponse2.setLastName("Kelters");
-        userResponse2 .setEmail("lee_kelters@hotmail.com");
+        userResponse2.setEmail("lee_kelters@hotmail.com");
 
         when(userRepository.findAll()).thenReturn(nepUsers);
 
@@ -250,6 +250,16 @@ class UserServiceTest {
         assertEquals(email, resultaat.getEmail());
         verify(userRepository, times(1)).save(any(User.class));
         verify(entityManager, times(1)).getReference(Role.class, 1L);
+    }
+
+    @Test
+    void deleteUser_whenUserDoesNotExist_shouldDeleteUser() {
+        //Arragne
+        when(userRepository.existsById(111L)).thenReturn(false);
+
+        // Aact & Assert
+        assertThrows(ResourceNotFoundException.class, () -> userService.deleteUser(111L));
+        verify(userRepository, never()).deleteById(any());
     }
 }
 

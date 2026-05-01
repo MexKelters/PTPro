@@ -3,6 +3,8 @@ package com.ptpro.service;
 import com.ptpro.dto.request.CreateTrainerRequest;
 import com.ptpro.dto.request.UpdateTrainerRequest;
 import com.ptpro.dto.response.TrainerResponse;
+import com.ptpro.exception.DuplicateResourceException;
+import com.ptpro.exception.ResourceNotFoundException;
 import com.ptpro.mapper.TrainerMapper;
 import com.ptpro.model.Trainer;
 import com.ptpro.model.User;
@@ -150,4 +152,31 @@ class TrainerServiceTest {
         // Assert
         verify(trainerRepository, times(1)).deleteById(1L);
     }
+
+    @Test
+    void deleteTrainer_whenTrainerNotFound_shouldThrowResourceNotFoundException() {
+        // Arrange
+        when(trainerRepository.existsById(111L)).thenReturn(false);
+
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class, () -> trainerService.deleteTrainer(111L));
+        verify(trainerRepository, never()).deleteById(any());
+    }
+
+    @Test
+    void addTrainer_whenTrainerAlreadyExists_shouldThrowDuplicateResourceException() {
+        // Arrange
+        CreateTrainerRequest request = new CreateTrainerRequest();
+        request.setUserId(1L);
+
+        User user = new User();
+        user.setId(1L);
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(trainerRepository.existsByUserId(1L)).thenReturn(true);
+
+        // Act & Assert
+        assertThrows(DuplicateResourceException.class, () -> trainerService.addTrainer(request));
+    }
+
 }
